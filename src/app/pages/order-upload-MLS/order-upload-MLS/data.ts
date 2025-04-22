@@ -1,0 +1,78 @@
+const UsersData = [
+    {
+        id: 1,
+        clientName: 'Pace Wisdom',
+        clientOrder: '#123',
+        quatreoOrder: '#12345',
+        countryState: 'Le Flore, OK OK',
+        status: 'In Progress',
+        userTax: 'Archana Tax',
+        eddDate: '05/10/2019',
+        priority: 'High',
+        tax: 'WOCA',
+        utility: 'WOCA',
+        code: 'WOCA',
+        permit: 'WOCA'
+    },
+    {
+        id: 2,
+        clientName: 'Pace Wisdom',
+        clientOrder: '#123',
+        quatreoOrder: '#12345',
+        countryState: 'Le Flore, OK OK',
+        status: 'In Progress',
+        userTax: 'Archana Tax',
+        eddDate: '05/10/2019',
+        priority: 'High',
+        tax: 'WOCA',
+        utility: 'WOCA',
+        code: 'WOCA',
+        permit: 'WOCA'
+    },
+    {
+        id: 3,
+        clientName: 'Pace Wisdom',
+        clientOrder: '#123',
+        quatreoOrder: '#12345',
+        countryState: 'Le Flore, OK OK',
+        status: 'In Progress',
+        userTax: 'Archana Tax',
+        eddDate: '05/10/2019',
+        priority: 'High',
+        tax: 'WOCA',
+        utility: 'WOCA',
+        code: 'WOCA',
+        permit: 'WOCA'
+    },
+    {
+        id: 4,
+        clientName: 'Pace Wisdom',
+        clientOrder: '#123',
+        quatreoOrder: '#12345',
+        countryState: 'Le Flore, OK OK',
+        status: 'In Progress',
+        userTax: 'Archana Tax',
+        eddDate: '05/10/2019',
+        priority: 'High',
+        tax: 'WOCA',
+        utility: 'WOCA',
+        code: 'WOCA',
+        permit: 'WOCA'
+    },
+    {
+        id: 5,
+        clientName: 'Pace Wisdom',
+        clientOrder: '#123',
+        quatreoOrder: '#12345',
+        countryState: 'Le Flore, OK OK',
+        status: 'In Progress',
+        userTax: 'Archana Tax',
+        eddDate: '05/10/2019',
+        priority: 'High',
+        tax: 'WOCA',
+        utility: 'WOCA',
+        code: 'WOCA',
+        permit: 'WOCA'
+    }
+];
+export { UsersData };

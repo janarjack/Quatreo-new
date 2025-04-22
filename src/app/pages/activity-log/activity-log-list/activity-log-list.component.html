@@ -1,0 +1,168 @@
+<div class="container-fluid">
+  <app-page-title
+    title="Manage User"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center pb-2 mb-4 bb-1-grey">
+            <div class="col-6 col-sm-8 col-md-8 font-weight-bold header-title">
+              Actvity Log List
+            </div>
+            <div
+              class="col-6 col-sm-4 col-md-4 text-md-right"
+              *ngIf="roleName != 'Admin'"
+            >
+              <a
+                href="javascript: void(0);"
+                class="btn btn-danger font-weight-bold"
+                (click)="openModal()"
+                ><i class="mdi mdi-plus-circle mr-1"></i> Add Activity Log</a
+              >
+            </div>
+          </div>
+          <div class="row mb-md-2">
+            <app-ui-preloader [display]="loading"></app-ui-preloader>
+            <!-- Search -->
+            <div class="col-sm-12 col-md-12">
+              <div id="tickets-table_filter" class="dataTables_filter">
+                <label class="d-inline-flex align-items-center"
+                  >Filter:
+                  <input
+                    class="form-control ml-2"
+                    #datepickerMDY1="bsDatepicker"
+                    bsDatepicker
+                    [(ngModel)]="todaysDate"
+                    (ngModelChange)="_fetchData()"
+                    [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY' }"
+                    onkeydown="return false"
+                  />
+                </label>
+              </div>
+            </div>
+            <!-- End search -->
+          </div>
+          <!-- Table -->
+          <div class="table-responsive">
+            <table id="basic-datatable" class="table dt-responsive nowrap">
+              <thead>
+                <tr>
+                  <th sortable="name">First Name</th>
+                  <th sortable="name">Last Name</th>
+                  <th sortable="logintime">Login Time</th>
+                  <th sortable="category">Category</th>
+                  <th sortable="starttime">Start Time</th>
+                  <th sortable="endtime">End Time</th>
+                  <th sortable="log">Log</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let table of tableData">
+                  <td>
+                    <ngb-highlight
+                      [result]="table.user.firstName"
+                    ></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight
+                      [result]="table.user.lastName"
+                    ></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight [result]="table.loginTime"></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight [result]="table.category"></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight [result]="table.startTime"></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight [result]="table.endTime"></ngb-highlight>
+                  </td>
+                  <td class="log">
+                    <ngb-highlight [result]="table.logComments"></ngb-highlight>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center" *ngIf="!tableData || tableData.length == 0">
+            <h5 class="nodata">No data available</h5>
+          </div>
+          <!-- End table -->
+          <!-- Pagination -->
+          <div
+            class="row justify-content-md-between align-items-md-center mt-2"
+            *ngIf="tableData.length > 0"
+          >
+            <div class="col-sm-12 col-md-5">
+              <div
+                class="dataTables_info mb-2"
+                id="tickets-table_info"
+                role="status"
+                aria-live="polite"
+                *ngIf="totalSize > 0"
+              >
+                Showing
+                {{ (page - 1) * pageSize + 1 }} to
+                {{
+                  page - 1 >= totalSize / pageSize - 1
+                    ? totalSize
+                    : ((page - 1) * pageSize + pageSize | number: locale)
+                }}
+                of {{ totalSize }}
+                entries
+              </div>
+            </div>
+
+            <div
+              class="col-sm-12 col-md-5 d-flex justify-content-end flex-wrap"
+            >
+              <div class="select_box">
+                <!-- <select
+                  name=""
+                  id=""
+                  [(ngModel)]="pageSize"
+                  (change)="changePagesize()"
+                  class="mx-md-n5"
+                >
+                  <option
+                    [value]="page.value"
+                    *ngFor="let page of sizeOptions"
+                    >{{ page.name }}</option
+                  >
+                </select> -->
+                <ng-select
+                  [items]="sizeOptions"
+                  bindLabel="name"
+                  bindValue="value"
+                  [clearable]="false"
+                  [(ngModel)]="pageSize"
+                  (change)="changePagesize()"
+                  appendTo="body"
+                >
+                </ng-select>
+              </div>
+              <div class="text-md-right pagination-rounded">
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [collectionSize]="totalSize"
+                  [maxSize]="1"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                  (pageChange)="loadPage($event)"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+          <!-- End Pagination -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

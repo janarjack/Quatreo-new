@@ -1,0 +1,62 @@
+#upload_button {
+  display: inline-block;
+
+  input[type='file'] {
+    display: none;
+  }
+
+  .custom-icon {
+    border: solid 1px #ced4da;
+    border-radius: 0 0.2rem 0.2rem 0;
+
+    .upoloadfilebtn {
+      cursor: pointer;
+      margin: 11px;
+      border-color: #858398;
+    }
+  }
+}
+.select-mls-header {
+  font-weight: 600;
+}
+i.fa-calendar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  pointer-events: none;
+}
+.card-body {
+  padding: 0.45rem 0.9rem;
+}
+.skill-list {
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  background: transparent;
+  margin-bottom: 0px;
+}
+
+.card-body {
+  padding: 0.45rem 0.9rem;
+}
+.scroll-y {
+  min-height: 35px;
+  max-height: 80px;
+  overflow-y: auto;
+}
+.view-pdf {
+  width: 100%;
+  min-height: 400px;
+}
+a {
+  color: blue;
+  cursor: pointer;
+}
+.view-image {
+  max-width: 100%;
+}
+.f-12 {
+  font-size: 13px;
+}
+.c-pointer {
+  cursor: pointer;
+}

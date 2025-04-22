@@ -1,0 +1,326 @@
+<div>
+  <div class="modal-header bg-dark ">
+    <h4 class="modal-title text-white">{{ action }} User</h4>
+    <button
+      type="button"
+      class="close text-white"
+      aria-label="Close"
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <!-- Modal body -->
+  <div class="modal-body p-3">
+    <div class="text-left">
+      <!-- <app-ui-preloader [display]="loading"></app-ui-preloader> -->
+      <form (ngSubmit)="saveData()" [formGroup]="userForm">
+        <!-- row -->
+        <div class="form-group col-md-12 row m-0 p-0">
+          <div class="col-md-4 col-sm-12 mb-2">
+            <label for="firstName"
+              >First Name<span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="firstName"
+              placeholder="Enter first name"
+              formControlName="firstName"
+              [ngClass]="{ 'is-invalid': submitted && form.firstName?.errors }"
+            />
+            <div
+              *ngIf="submitted && form.firstName?.errors"
+              class="invalid-feedback"
+            >
+              <span *ngIf="form.firstName?.errors.required"
+                >This value is required.</span
+              >
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-12 mb-2">
+            <label for="lastName"
+              >Last Name<span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="lastName"
+              placeholder="Enter last name"
+              formControlName="lastName"
+              [ngClass]="{ 'is-invalid': submitted && form.lastName?.errors }"
+            />
+            <div
+              *ngIf="submitted && form.lastName?.errors"
+              class="invalid-feedback"
+            >
+              <span *ngIf="form.lastName?.errors.required"
+                >This value is required.</span
+              >
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-12 mb-2">
+            <label for="email"
+              >Email ID<span class="text-danger">*</span></label
+            >
+            <input
+              class="form-control"
+              id="email"
+              placeholder="Enter email"
+              formControlName="email"
+              [ngClass]="{ 'is-invalid': submitted && form.email?.errors }"
+            />
+            <div
+              *ngIf="submitted && form.email?.errors"
+              class="invalid-feedback"
+            >
+              <span *ngIf="form.email?.errors.required"
+                >This value is required.</span
+              >
+              <span *ngIf="form.email?.errors.pattern"
+                >Please enter valid email.</span
+              >
+            </div>
+          </div>
+        </div>
+        <!-- row -->
+        <div class="form-group col-md-12 row m-0 p-0">
+          <div class="col-md-4 col-sm-12 mb-2">
+            <label for="employeeId"
+              >Emp ID<span class="text-danger">*</span></label
+            >
+            <input
+              class="form-control"
+              id="employeeId"
+              placeholder="Enter Emp ID"
+              formControlName="employeeId"
+              maxlength="8"
+              [ngClass]="{ 'is-invalid': submitted && form.employeeId?.errors }"
+            />
+            <div
+              *ngIf="submitted && form.employeeId?.errors"
+              class="invalid-feedback"
+            >
+              <span *ngIf="form.employeeId?.errors.required"
+                >This value is required.</span
+              >
+            </div>
+          </div>
+
+          <div class="col-md-4 col-sm-12 mb-2">
+            <label for="name"
+              >Phone number<span class="text-danger">*</span></label
+            >
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              formControlName="phone"
+              [textMask]="{ mask: mask, guide: false, modelClean: true }"
+              placeholder="Enter Phone Number"
+              [ngClass]="{ 'is-invalid': submitted && form.phone?.errors }"
+              minlength="14"
+            />
+            <div
+              *ngIf="submitted && form.phone?.errors"
+              class="invalid-feedback"
+            >
+              <span *ngIf="form.phone?.errors.required"
+                >This value is required.</span
+              >
+              <span *ngIf="form.phone?.errors.minlength"
+                >Phone number must be at-least 10 digits.</span
+              >
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-12 mb-2">
+            <label for="name"
+              >No. Of Orders<span class="text-danger">*</span></label
+            >
+            <input
+              class="form-control"
+              id="noOfOrders"
+              ktSpecialCharacters
+              formControlName="noOfOrders"
+              maxlength="4"
+              placeholder="Enter Number of Orders"
+              [ngClass]="{ 'is-invalid': submitted && form.noOfOrders?.errors }"
+            />
+            <div
+              *ngIf="submitted && form.noOfOrders?.errors"
+              class="invalid-feedback"
+            >
+              <span *ngIf="form.noOfOrders?.errors.required"
+                >This value is required.</span
+              >
+            </div>
+          </div>
+        </div>
+        <!-- row -->
+        <div class="form-group  col-md-12 row m-0 p-0">
+          <div class="col-md-6 col-sm-12 mb-2">
+            <label for="role">Role<span class="text-danger">*</span></label>
+            <ng-select
+              [items]="selectRole"
+              [multiple]="true"
+              bindLabel="roleName"
+              [closeOnSelect]="false"
+              formControlName="role"
+              [(ngModel)]="selectedRole"
+              [ngClass]="{ 'is-invalid': submitted && form.role?.errors }"
+              required
+              (change)="getDefaultRole()"
+            >
+              <ng-template
+                ng-option-tmp
+                let-item="item"
+                let-item$="item$"
+                let-index="index"
+              >
+                <input
+                  id="item-{{ index }}"
+                  type="checkbox"
+                  [ngModel]="item$.selected"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+                {{ item.roleName }}
+              </ng-template>
+            </ng-select>
+            <div *ngIf="submitted && form.role?.errors" class="invalid">
+              <span *ngIf="form.role?.errors.required"
+                >This value is required.</span
+              >
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-12 mb-2">
+            <label for="defaultRole"
+              >Default Role<span class="text-danger">*</span></label
+            >
+            <ng-select
+              class="ngSelect"
+              [items]="selectedRole"
+              bindLabel="roleName"
+              [(ngModel)]="defaultRoleID"
+              formControlName="defaultRole"
+              [ngClass]="{
+                'is-invalid': submitted && form.defaultRole?.errors
+              }"
+            ></ng-select>
+            <div *ngIf="submitted && form.defaultRole?.errors" class="invalid">
+              <span *ngIf="form.defaultRole?.errors.required"
+                >This value is required.</span
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- row -->
+        <div class="form-group  col-md-12 row m-0 p-0">
+          <div class="col-md-6 col-sm-12 mb-2">
+            <label for="skill">Skill<span class="text-danger">*</span></label>
+            <ng-select
+              [items]="selectSkill"
+              [multiple]="true"
+              bindLabel="names"
+              [closeOnSelect]="false"
+              formControlName="skill"
+              [(ngModel)]="selectedSkill"
+              [ngClass]="{ 'is-invalid': submitted && form.skill?.errors }"
+              required
+            >
+              <ng-template
+                ng-option-tmp
+                let-item="item"
+                let-item$="item$"
+                let-index="index"
+              >
+                <input
+                  id="item-{{ index }}"
+                  type="checkbox"
+                  [ngModel]="item$.selected"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+                {{ item.categoryName + '(' + item.product?.productName + ')' }}
+              </ng-template>
+            </ng-select>
+            <div *ngIf="submitted && form.skill?.errors" class="invalid">
+              <span *ngIf="form.skill?.errors.required"
+                >This value is required.</span
+              >
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-12 mb-2">
+            <label for="client">Client<span class="text-danger">*</span></label>
+            <ng-select
+              [items]="selectClient"
+              [multiple]="true"
+              bindLabel="clientName"
+              [closeOnSelect]="false"
+              formControlName="client"
+              [(ngModel)]="selectedClient"
+              [ngClass]="{ 'is-invalid': submitted && form.client?.errors }"
+              required
+            >
+              <ng-template
+                ng-option-tmp
+                let-item="item"
+                let-item$="item$"
+                let-index="index"
+              >
+                <input
+                  id="item-{{ index }}"
+                  type="checkbox"
+                  [ngModel]="item$.selected"
+                  [ngModelOptions]="{ standalone: true }"
+                />
+                {{ item.clientName }}
+              </ng-template>
+            </ng-select>
+            <div *ngIf="submitted && form.client?.errors" class="invalid">
+              <span *ngIf="form.client?.errors.required"
+                >This value is required.</span
+              >
+            </div>
+          </div>
+          <!-- only for Edit screen -->
+          <div class="col-md-4 col-sm-12 mb-2" *ngIf="action == 'Edit'">
+            <label>Status</label>
+            <div class="col-md-12 ">
+              <div
+                class="radio  form-check-inline"
+                *ngFor="let list of statusdata"
+              >
+                <input
+                  type="radio"
+                  [value]="list.statusValue"
+                  formControlName="isActive"
+                />
+                <label for="inlineRadio1"> {{ list.statusData }} </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- buttons -->
+        <div class="text-right">
+          <button type="submit" class="btn btn-success">
+            Save
+            <span
+              class="spinner-border spinner-border-sm ml-1"
+              role="status"
+              aria-hidden="true"
+              *ngIf="isloading"
+            ></span>
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger ml-1"
+            (click)="activeModal.dismiss('Cross click')"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+#upload_button {
+    display: inline-block;
+    .fas{
+      cursor: pointer;
+    }
+  }
+#upload_button input[type=file] {
+    display:none;
+  }
+.select-mls-header{
+    font-weight: 600;
+}
+.badge {
+  color: #fff;
+  width: 75px;
+  margin-right: 4px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  .fas{
+    cursor: pointer;
+  }
+}
+.skill-list{
+  border: 1px solid rgba(0,0,0,0.125);
+  border-radius: .25rem; 
+  background: transparent;
+}
+.custom-width{
+  min-height: 10px;
+}
+hr{
+  margin-bottom: unset;
+  border-top: 1px solid #dad7d7;
+}
+.uploaded{
+  label{
+  font-weight: 400;
+  }
+ 
+}
+.lightgreycolor{
+  color: #d4d3d3;
+}
+.c-pointer{
+  cursor: pointer !important;
+}

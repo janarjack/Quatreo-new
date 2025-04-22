@@ -1,0 +1,237 @@
+<div class="container-fluid">
+  <app-page-title
+    title="TL Main Screen"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center pb-2 mb-4 bb-1-grey">
+            <div class="col-sm-12 col-md-8 font-weight-bold header-title">
+              Pending For Review Order List
+            </div>
+          </div>
+
+          <!-- counts -->
+          <app-ui-preloader [display]="loading"></app-ui-preloader>
+
+          <div class="row">
+            <!-- client filter -->
+            <!-- <div class="col-md-4 col-sm-12">
+                  <label for="role">Client</label>
+                  <ng-select [items]="selectClient"></ng-select>
+                </div> -->
+
+            <!-- Search -->
+
+            <!-- Table -->
+            <div class="table-responsive">
+              <table id="basic-datatable" class="table dt-responsive nowrap">
+                <thead>
+                  <tr>
+                    <th sortable="clientName">Client Name</th>
+                    <th sortable="clientOrder">Client Order</th>
+                    <th sortable="quatreoOrder">Quatreo Order</th>
+                    <th sortable="receivedDate">Received Date</th>
+                    <th sortable="product">Product</th>
+                    <th sortable="type">Type</th>
+                    <th sortable="ecd">ECD</th>
+                    <!-- <th sortable="priority">Priority</th>
+                    <th sortable="state">State</th>
+                    <th sortable="county">County</th> -->
+                    <th sortable="action">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let table of tableData | filter: clientname">
+                    <td>
+                      <ngb-highlight
+                        [result]="
+                          (table?.userOrderDetails)[0].userOrder.order.client
+                            .clientName
+                        "
+                      ></ngb-highlight>
+                    </td>
+                    <td>
+                      <ngb-highlight
+                        [result]="
+                          (table?.userOrderDetails)[0].userOrder.order
+                            .clientOrderNumber
+                        "
+                        class="clientOrder"
+                        (click)="editClientdata(table)"
+                      >
+                      </ngb-highlight>
+                    </td>
+                    <td>
+                      <ngb-highlight
+                        [result]="
+                          (table?.userOrderDetails)[0].userOrder.order
+                            .quatreoOrderNumber
+                        "
+                      ></ngb-highlight>
+                    </td>
+                    <td>
+                      {{
+                        convertDateToString(
+                          (table?.userOrderDetails)[0].userOrder?.order
+                            ?.recievedDate
+                        ) | date: 'MM/dd/yyyy'
+                      }}
+                    </td>
+                    <td>
+                      <span
+                        *ngFor="
+                          let list of (table?.userOrderDetails)[1].productArray;
+                          let i = index
+                        "
+                      >
+                        {{ list.productName | titlecase }}
+                        <span
+                          *ngIf="
+                            (table?.userOrderDetails)[1].productArray.length -
+                              1 >
+                            i
+                          "
+                          >,</span
+                        >
+                      </span>
+                    </td>
+                    <td>
+                      <ngb-highlight
+                        [result]="
+                          (table?.userOrderDetails)[0].userOrder.order
+                            ?.orderType
+                        "
+                      ></ngb-highlight>
+                    </td>
+                    <td>
+                      {{
+                        convertDateToString(
+                          (table?.userOrderDetails)[0].userOrder
+                            ?.expectedClosingDate
+                        ) | date: 'MM/dd/yyyy'
+                      }}
+                    </td>
+                    <!-- <td>
+                      <ngb-highlight
+                        [result]="
+                          (table?.userOrderDetails)[0].userOrder.order?.priority
+                            .priorityName
+                        "
+                      ></ngb-highlight>
+                    </td>
+                    <td>
+                      <ngb-highlight
+                        [result]="
+                          (table?.userOrderDetails)[0].userOrder.order?.county
+                            ?.state.stateName
+                        "
+                      ></ngb-highlight>
+                    </td>
+                    <td>
+                      <ngb-highlight
+                        [result]="
+                          (table?.userOrderDetails)[0].userOrder.order?.county
+                            ?.countyName
+                        "
+                      ></ngb-highlight>
+                    </td> -->
+                    <td>
+                      <a
+                        href="javascript:void(0);"
+                        class="action-icon"
+                        (click)="viewTeamMemberData(table)"
+                        placement="bottom"
+                        ngbTooltip="View Order Details"
+                      >
+                        <i class="mdi mdi mdi-eye-outline"></i
+                      ></a>
+                      <a
+                        href="javascript:void(0);"
+                        class="action-icon"
+                        (click)="confirm(table, content)"
+                        placement="bottom"
+                        ngbTooltip="Mark as completed"
+                      >
+                        <i class="mdi mdi-check-circle c-green"></i
+                      ></a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div
+                class="text-center my-4"
+                *ngIf="
+                  !tableData ||
+                  tableData.length == 0 ||
+                  (tableData | filter: clientname:true:true).length == 0
+                "
+              >
+                <h5 class="nodata">No data available</h5>
+              </div>
+            </div>
+            <!-- End table -->
+
+            <!-- End table -->
+            <!-- Pagination -->
+            <div
+              class="row justify-content-md-between col-md-12 align-items-md-center mt-2"
+              *ngIf="(tableData | filter: clientname:true:true).length > 0"
+            >
+              <div class="col-sm-12 col-md-5">
+                <div
+                  class="dataTables_info mb-2"
+                  id="tickets-table_info"
+                  role="status"
+                  aria-live="polite"
+                >
+                  Showing {{ (page - 1) * pageSize + 1 }} to
+                  {{
+                    page - 1 >=
+                    (tableData | filter: clientname:true:true).length /
+                      pageSize -
+                      1
+                      ? (tableData | filter: clientname:true:true).length
+                      : ((page - 1) * pageSize + pageSize | number: locale)
+                  }}
+                  of {{ (tableData | filter: clientname:true:true).length }}
+                  entries
+                </div>
+              </div>
+
+              <div
+                class="col-sm-12 col-md-5 d-flex justify-content-end flex-wrap"
+              >
+                <div class="select_box">
+                  <select name="" id="" [(ngModel)]="pageSize" class="mx-md-n5">
+                    <option
+                      [value]="page.value"
+                      *ngFor="let page of sizeOptions"
+                      >{{ page.name }}</option
+                    >
+                  </select>
+                </div>
+                <div class="text-md-right pagination-rounded">
+                  <ngb-pagination
+                    [(page)]="page"
+                    [pageSize]="pageSize"
+                    [collectionSize]="
+                      (tableData | filter: clientname:true:true).length
+                    "
+                    [maxSize]="1"
+                    [rotate]="true"
+                    [ellipses]="false"
+                    [boundaryLinks]="true"
+                  ></ngb-pagination>
+                </div>
+              </div>
+            </div>
+            <!-- End Pagination -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

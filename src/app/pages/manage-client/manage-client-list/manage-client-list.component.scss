@@ -1,0 +1,14 @@
+.nodata{
+    color: #6c757d !important;
+}
+// .select_box{
+//   ng-select {
+//     width: 67px;
+//     // height: 30px !important;
+//   }
+// } 
+
+.select_box ng-select:focus{
+    outline: none;;
+}
+ 

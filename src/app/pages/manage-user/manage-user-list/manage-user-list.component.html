@@ -1,0 +1,216 @@
+<div class="container-fluid">
+  <app-page-title
+    title="Manage User"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center pb-2 mb-4 bb-1-grey">
+            <div class="col-5 col-sm-8 col-md-8 font-weight-bold header-title">
+              User Listing
+            </div>
+            <div class="col-7 col-sm-4 col-md-4 text-md-right">
+              <a
+                href="javascript: void(0);"
+                class="btn btn-danger font-weight-bold"
+                (click)="openModal()"
+                ><i class="mdi mdi-plus-circle mr-1"></i> Add User</a
+              >
+            </div>
+          </div>
+
+          <div class="row mb-md-2">
+            <app-ui-preloader [display]="loading"></app-ui-preloader>
+
+            <!-- Search -->
+            <div class="col-sm-12 col-md-12">
+              <div
+                id="tickets-table_filter"
+                class="dataTables_filter text-md-right"
+              >
+                <label class="d-inline-flex align-items-center"
+                  >Search:
+                  <input
+                    type="text"
+                    name="searchTerm"
+                    placeholder="User Name"
+                    [(ngModel)]="searchTerm"
+                    (keyup)="applyFilter($event.target.value)"
+                    class="form-control form-control-sm ml-2"
+                    aria-controls="tickets-table"
+                /></label>
+              </div>
+            </div>
+            <!-- End search -->
+          </div>
+
+          <!-- Table -->
+          <div class="table-responsive">
+            <table id="basic-datatable" class="table dt-responsive nowrap">
+              <thead>
+                <tr>
+                  <!-- <th sortable="slno">SL.No</th> -->
+                  <th sortable="firstName">First Name</th>
+                  <th sortable="lastName">Last Name</th>
+                  <th sortable="email">Email</th>
+                  <th sortable="phone">Phone</th>
+                  <th sortable="noOfOrderProcessable">
+                    No. Of Order Processable
+                  </th>
+                  <th sortable="employeeId">Employee ID</th>
+                  <th sortable="active">Status</th>
+                  <th sortable="action">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let table of tableData">
+                  <td>
+                    <ngb-highlight [result]="table.firstName"></ngb-highlight>
+                  </td>
+                  <td>{{ table.lastName }}</td>
+                  <td>
+                    <ngb-highlight [result]="table.email"></ngb-highlight>
+                  </td>
+                  <td>
+                    {{ table.phone | phone: 'US' }}
+                  </td>
+                  <td>
+                    <ngb-highlight
+                      [result]="table.noOfOrderProcessable"
+                    ></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight [result]="table.employeeId"></ngb-highlight>
+                  </td>
+                  <td>
+                    <span
+                      class="badge bg-soft-{{
+                        getStatusClass(table.active)
+                      }} text-{{ getStatusClass(table.active) }}"
+                      >{{ getStatus(table.active) }}</span
+                    >
+                  </td>
+                  <td class="d-flex">
+                    <a
+                      href="javascript:void(0);"
+                      class="action-icon"
+                      (click)="editUserdata(table, 'Edit')"
+                      placement="bottom"
+                      ngbTooltip="Edit User"
+                    >
+                      <i class="mdi mdi-square-edit-outline"></i
+                    ></a>
+                    <a
+                      href="javascript:void(0);"
+                      class="action-icon"
+                      (click)="viewUserdata(table)"
+                      placement="bottom"
+                      ngbTooltip="View User Details"
+                    >
+                      <i class="mdi mdi mdi-eye-outline"></i
+                    ></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center" *ngIf="!tableData || tableData.length == 0">
+            <h5 class="nodata">No data available</h5>
+          </div>
+          <!-- End table -->
+
+          <!-- Pagination -->
+          <div
+            class="row justify-content-md-between align-items-md-center mt-2"
+            *ngIf="tableData"
+          >
+            <div class="col-sm-12 col-md-5">
+              <div
+                class="dataTables_info mb-2"
+                id="tickets-table_info"
+                role="status"
+                aria-live="polite"
+                *ngIf="totalSize > 0"
+              >
+                Showing
+                {{ (page - 1) * pageSize + 1 }} to
+                {{
+                  page - 1 >= totalSize / pageSize - 1
+                    ? totalSize
+                    : ((page - 1) * pageSize + pageSize | number: locale)
+                }}
+                of {{ totalSize }}
+                entries
+              </div>
+            </div>
+
+            <div
+              class="col-sm-12 col-md-5 d-flex justify-content-end flex-wrap"
+            >
+              <!-- <div class="select_box">
+                <select name="" id="" [(ngModel)]="pageSize" class="mx-md-n5">
+                  <option
+                    [value]="page.value"
+                    *ngFor="let page of sizeOptions"
+                    >{{ page.name }}</option
+                  >
+                </select>
+              </div>
+              <div class="text-md-right pagination-rounded">
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [collectionSize]="totalSize"
+                  [maxSize]="1"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                ></ngb-pagination>
+              </div> -->
+              <div class="select_box">
+                <!-- <select
+                  name=""
+                  id=""
+                  [(ngModel)]="pageSize"
+                  (change)="changePagesize()"
+                  class="mx-md-n5"
+                >
+                  <option
+                    [value]="page.value"
+                    *ngFor="let page of sizeOptions"
+                    >{{ page.name }}</option
+                  >
+                </select> -->
+                <ng-select
+                  [items]="sizeOptions"
+                  bindLabel="name"
+                  bindValue="value"
+                  [clearable]="false"
+                  [(ngModel)]="pageSize"
+                  (change)="changePagesize()"
+                  appendTo="body"
+                >
+                </ng-select>
+              </div>
+              <div class="text-md-right pagination-rounded">
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [collectionSize]="totalSize"
+                  [maxSize]="1"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                  (pageChange)="loadPage($event)"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+          <!-- End Pagination -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,164 @@
+<!-- Bulk Order Section Start -->
+<div class="container-fluid">
+  <app-page-title
+    title=""
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center pb-2 mb-4 bb-1-grey">
+            <div class="col-12 col-sm-8 col-md-4 font-weight-bold header-title">
+              Bulk Orders
+            </div>
+          </div>
+          <app-ui-preloader [display]="loading"></app-ui-preloader>
+          <!-- Table -->
+          <div class="table-responsive">
+            <table id="basic-datatable" class="table dt-responsive nowrap">
+              <thead>
+                <tr class="text-capitalize">
+                  <!-- <th sortable="slno">SL.No</th> -->
+                  <th sortable="clientName">Uploaded File</th>
+
+                  <th sortable="clientName">Error File</th>
+                  <th sortable="clientOrder">Status</th>
+                  <th sortable="quatreoOrder">Number of Success Order</th>
+                  <th sortable="countyState">Number Of Failed Order</th>
+                  <!-- <th>Client</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="
+                    let table of tableData
+                      | slice
+                        : (page - 1) * pageSize
+                        : (page - 1) * pageSize + pageSize
+                  "
+                >
+                  <td>
+                    <ngb-highlight
+                      [result]="table?.sourceFilename"
+                    ></ngb-highlight>
+                    <span *ngIf="table?.sourceFilename == null">
+                      -
+                    </span>
+                  </td>
+                  <td>
+                    <a (click)="openErrorfile(table)">{{
+                      table?.errFileName
+                    }}</a>
+                    <span *ngIf="table?.errFileName == null">
+                      -
+                    </span>
+                  </td>
+
+                  <td>
+                    <ngb-highlight [result]="table?.status"></ngb-highlight>
+                  </td>
+                  <td>
+                    {{ table?.noOfSuccessOrder }}
+                    <span *ngIf="table?.noOfSuccessOrder == null">
+                      -
+                    </span>
+                  </td>
+                  <td>
+                    {{ table?.noOfFailedOrder }}
+                    <span *ngIf="table?.noOfFailedOrder == null">
+                      -
+                    </span>
+                  </td>
+                  <!-- <td> -->
+                  <!-- <ngb-highlight [result]=""></ngb-highlight> -->
+                  <!-- </td> -->
+
+                  <!-- <td>
+                    {{ table?.client }}
+                    <span *ngIf="table?.client == null">
+                      -
+                    </span>
+                  </td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center" *ngIf="!tableData || tableData.length == 0">
+            <h5 class="nodata">No data available</h5>
+          </div>
+          <!-- End table -->
+          <!-- <div *ngIf="tableData"> -->
+          <!-- Pagination -->
+          <div
+            class="row justify-content-md-between align-items-md-center mt-2"
+            *ngIf="tableData"
+          >
+            <div class="col-sm-12 col-md-5">
+              <div
+                class="dataTables_info mb-2"
+                id="tickets-table_info"
+                role="status"
+                aria-live="polite"
+                *ngIf="totalSize > 0"
+              >
+                Showing
+                {{ (page - 1) * pageSize + 1 }} to
+                {{
+                  page - 1 >= totalSize / pageSize - 1
+                    ? totalSize
+                    : ((page - 1) * pageSize + pageSize | number: locale)
+                }}
+                of {{ totalSize }}
+                entries
+              </div>
+            </div>
+
+            <div
+              class="col-sm-12 col-md-5 d-flex justify-content-end flex-wrap"
+              *ngIf="totalSize > 0"
+            >
+              <div class="select_box">
+                <!-- <select
+                    name=""
+                    id=""
+                    [(ngModel)]="pageSize"
+                    (change)="changePagesize()"
+                    class="mx-md-n5"
+                  >
+                    <option
+                      [value]="page.value"
+                      *ngFor="let page of sizeOptions"
+                      >{{ page.name }}</option
+                    >
+                  </select> -->
+                <ng-select
+                  [items]="sizeOptions"
+                  bindLabel="name"
+                  bindValue="value"
+                  [clearable]="false"
+                  [(ngModel)]="pageSize"
+                  appendTo="body"
+                >
+                </ng-select>
+              </div>
+              <div class="text-md-right pagination-rounded">
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [collectionSize]="totalSize"
+                  [maxSize]="1"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+          <!-- End Pagination -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Bulk order Section End -->

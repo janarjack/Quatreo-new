@@ -1,0 +1,111 @@
+<div class="container-fluid">
+  <app-page-title
+    title="Manage User"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center pb-2 mb-4 bb-1-grey">
+            <div class="col-5 col-sm-8 col-md-8 font-weight-bold header-title">
+              Weblinks Listing
+            </div>
+            <div class="col-7 col-sm-4 col-md-4 text-md-right">
+              <a
+                href="javascript: void(0);"
+                class="btn btn-danger font-weight-bold"
+                (click)="openModal()"
+                ><i class="mdi mdi-plus-circle mr-1"></i> Add Weblinks</a
+              >
+            </div>
+          </div>
+          <div class="row col-sm-12 col-md-12 mb-3">
+            <div class="col-md-4 col-sm-12">
+              <!-- <small class="filter-name">Filter by Client Name</small> -->
+              <ng-select
+                class="ngSelect"
+                [items]="state"
+                bindLabel="stateName"
+                placeholder="Select State"
+                (change)="onFilterState($event)"
+              ></ng-select>
+            </div>
+            <div class="col-md-4 col-sm-12">
+              <!-- <small class="filter-name">Filter by Client Name</small> -->
+              <ng-select
+                class="ngSelect"
+                [items]="county"
+                bindLabel="countyName"
+                placeholder="Select County"
+                (change)="onFilterCounty($event)"
+                [(ngModel)]="selectedCounty"
+              ></ng-select>
+            </div>
+          </div>
+          <div class="row mb-md-2">
+            <app-ui-preloader [display]="loading"></app-ui-preloader>
+          </div>
+          <!-- Table -->
+          <div class="table-responsive">
+            <table id="basic-datatable" class="table dt-responsive nowrap">
+              <thead>
+                <tr>
+                  <th sortable="firstName">Label</th>
+                  <th sortable="lastName">Web Link</th>
+
+                  <!-- <th sortable="action">Action</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let table of tableData">
+                  <td>
+                    <ngb-highlight
+                      [result]="table.webLinkLabel"
+                    ></ngb-highlight>
+                  </td>
+                  <td>
+                    <a [href]="table.webLinkURL" target="_blank">{{
+                      table.webLinkURL
+                    }}</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center " *ngIf="!tableData || tableData.length == 0">
+            <h5 class="nodata">No data available</h5>
+          </div>
+          <!-- End table -->
+          <!-- Pagination -->
+          <div
+            class="row justify-content-md-between align-items-md-center mt-2"
+            *ngIf="tableData"
+          >
+            <div class="col-sm-12 col-md-5" *ngIf="tableData.length">
+              <div
+                class="dataTables_info mb-2"
+                id="tickets-table_info"
+                role="status"
+                aria-live="polite"
+              >
+                Showing {{ (page - 1) * pageSize + 1 }} to
+                {{
+                  page - 1 >= tableData.length / pageSize - 1
+                    ? tableData.length
+                    : ((page - 1) * pageSize + pageSize | number: locale)
+                }}
+                of {{ tableData.length }}
+                entries
+              </div>
+            </div>
+            <div
+              class="col-sm-12 col-md-5 d-flex justify-content-end flex-wrap"
+            ></div>
+          </div>
+          <!-- End Pagination -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

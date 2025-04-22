@@ -1,0 +1,85 @@
+
+const TLData = [
+{
+    id : 1,
+    clientName : 'Tracy',
+    clientOrder : 200,
+    quatreoOrder : 1234,
+    countyState : 'le flore, OK',
+    status : 'In Progress',
+    user : 'Archana',
+    taxMLS : 'tax',
+    eddDate : '10-10-2019',
+    priority: 'High',
+    tax: 'WOCA',
+    utility: 'WOCA',
+    code : 'WOCA',
+    permit: 'WOCA'
+},
+{
+    id : 2,
+    clientName : 'Adam',
+    clientOrder : 200,
+    quatreoOrder : 1234,
+    countyState : 'le flore, OK',
+    status : 'In Progress',
+    user : 'Archana',
+    taxMLS : 'tax',
+    eddDate : '10-10-2019',
+    priority: 'High',
+    tax: 'WOCA',
+    utility: 'WOCA',
+    code : 'WOCA',
+    permit: 'WOCA'
+},
+{
+    id : 3,
+    clientName : 'Johan',
+    clientOrder : 200,
+    quatreoOrder : 1234,
+    countyState : 'le flore, OK',
+    status : 'In Progress',
+    user : 'Archana',
+    taxMLS : 'tax',
+    eddDate : '10-10-2019',
+    priority: 'High',
+    tax: 'WOCA',
+    utility: 'WOCA',
+    code : 'WOCA',
+    permit: 'WOCA'
+},
+{
+    id : 4,
+    clientName : 'Nikky',
+    clientOrder : 200,
+    quatreoOrder : 1234,
+    countyState : 'le flore, OK',
+    status : 'In Progress',
+    user : 'Archana',
+    taxMLS : 'tax',
+    eddDate : '10-10-2019',
+    priority: 'High',
+    tax: 'WOCA',
+    utility: 'WOCA',
+    code : 'WOCA',
+    permit: 'WOCA'
+},
+{
+    id : 5,
+    clientName : 'Emma',
+    clientOrder : 200,
+    quatreoOrder : 1234,
+    countyState : 'le flore, OK',
+    status : 'In Progress',
+    user : 'Archana',
+    taxMLS : 'tax',
+    eddDate : '10-10-2019',
+    priority: 'High',
+    tax: 'WOCA',
+    utility: 'WOCA',
+    code : 'WOCA',
+    permit: 'WOCA'
+}
+];
+
+export { TLData };

@@ -1,0 +1,234 @@
+<!-- Order Management Section Start -->
+<div class="container-fluid">
+  <app-page-title
+    title="Order Management"
+    [breadcrumbItems]="breadCrumbItems"
+  ></app-page-title>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center pb-2 mb-4 bb-1-grey">
+            <div class="col-12 col-sm-8 col-md-4 font-weight-bold header-title">
+              Order Management
+            </div>
+            <div class="col-12 col-sm-4 col-md-8 text-md-right">
+              <!-- <a href="javascript: void(0);" class="btn btn-success font-weight-bold mr-2 mb-2"><i
+                                    class="mdi mdi-plus-circle mr-1"></i> Import</a> -->
+              <a
+                href="javascript: void(0);"
+                class="btn btn-danger font-weight-bold mb-2"
+                (click)="openModal()"
+                ><i class="mdi mdi-plus-circle mr-1"></i> Add New Order</a
+              >
+            </div>
+          </div>
+          <div class="row mb-md-2">
+            <!-- Search -->
+            <app-ui-preloader [display]="loading"></app-ui-preloader>
+
+            <div class="col-sm-12 col-md-12">
+              <div
+                id="tickets-table_filter"
+                class="dataTables_filter text-md-right"
+              >
+                <label class="d-inline-flex align-items-center col-md-5"
+                  >Search:
+                  <input
+                    type="text"
+                    name="searchTerm"
+                    placeholder="Client Order Number/Quatreo Order Number"
+                    [(ngModel)]="searchTerm"
+                    (keyup)="applyFilter($event.target.value)"
+                    class="form-control form-control-sm ml-2"
+                    aria-controls="tickets-table"
+                  />
+                </label>
+              </div>
+            </div>
+            <!-- End search -->
+          </div>
+          <!-- Table -->
+          <div class="table-responsive">
+            <table id="basic-datatable" class="table dt-responsive nowrap">
+              <thead>
+                <tr class="text-capitalize">
+                  <!-- <th sortable="slno">SL.No</th> -->
+                  <th sortable="clientName">Client Name</th>
+                  <th sortable="clientOrder">Client Order</th>
+                  <th sortable="quatreoOrder">Quatreo Order</th>
+                  <th sortable="countyState">County /State</th>
+
+                  <!-- <th sortable="userTax">Product</th> -->
+                  <th sortable="eddDate">EDD Date</th>
+                  <th sortable="priority">Priority</th>
+                  <th sortable="status">Status</th>
+                  <!-- <th sortable="tax">Tax</th>
+                  <th sortable="utility">Utility</th>
+                  <th sortable="code">Code</th>
+                  <th sortable="permit">Permit</th> -->
+                  <th sortable="action">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let table of tableData">
+                  <td>
+                    <ngb-highlight
+                      [result]="table.client?.clientName"
+                    ></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight
+                      [result]="table?.clientOrderNumber"
+                    ></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight
+                      [result]="table?.quatreoOrderNumber"
+                    ></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight
+                      [result]="table?.countyState"
+                    ></ngb-highlight>
+                    {{ table?.county?.countyName + '/'
+                    }}{{ table?.county?.state?.stateName }}
+                  </td>
+
+                  <!-- <td> -->
+                  <!-- <ngb-highlight [result]=""></ngb-highlight> -->
+                  <!-- </td> -->
+                  <td>
+                    {{
+                      convertDateToString(table?.expectedDeliveryDate)
+                        | date: 'MM/dd/yyyy'
+                    }}
+                  </td>
+                  <td>
+                    <ngb-highlight
+                      [result]="table?.priority.priorityName"
+                    ></ngb-highlight>
+                  </td>
+                  <!-- <td>
+                    <ngb-highlight [result]=""></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight [result]=""></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight [result]=""></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight [result]=""></ngb-highlight>
+                  </td> -->
+                  <td>
+                    <ngb-highlight
+                      [result]="table?.status.statusName"
+                    ></ngb-highlight>
+                  </td>
+                  <td class="d-flex">
+                    <button
+                      class="editbtn"
+                      href="javascript:void(0);"
+                      (click)="editOrderdata(table, 'Edit')"
+                      placement="bottom"
+                      ngbTooltip="Edit Order"
+                      [disabled]="table?.status.statusName != 'UNASSIGNED'"
+                    >
+                      <i class="mdi mdi-square-edit-outline"></i>
+                    </button>
+                    <a
+                      href="javascript:void(0);"
+                      class="action-icon"
+                      (click)="viewOrderData(table)"
+                      placement="bottom"
+                      ngbTooltip="View Order Details"
+                    >
+                      <i class="mdi mdi mdi-eye-outline"></i
+                    ></a>
+                    <!-- <a href="javascript:void(0);" class="action-icon"> <i class="mdi mdi-delete"></i></a> -->
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="text-center" *ngIf="!tableData || tableData.length == 0">
+            <h5 class="nodata">No data available</h5>
+          </div>
+          <!-- End table -->
+          <!-- <div *ngIf="tableData"> -->
+          <!-- Pagination -->
+          <div
+            class="row justify-content-md-between align-items-md-center mt-2"
+            *ngIf="tableData"
+          >
+            <div class="col-sm-12 col-md-5">
+              <div
+                class="dataTables_info mb-2"
+                id="tickets-table_info"
+                role="status"
+                aria-live="polite"
+                *ngIf="totalSize > 0"
+              >
+                Showing
+                {{ (page - 1) * pageSize + 1 }} to
+                {{
+                  page - 1 >= totalSize / pageSize - 1
+                    ? totalSize
+                    : ((page - 1) * pageSize + pageSize | number: locale)
+                }}
+                of {{ totalSize }}
+                entries
+              </div>
+            </div>
+
+            <div
+              class="col-sm-12 col-md-5 d-flex justify-content-end flex-wrap"
+              *ngIf="totalSize > 0"
+            >
+              <div class="select_box">
+                <!-- <select
+                  name=""
+                  id=""
+                  [(ngModel)]="pageSize"
+                  (change)="changePagesize()"
+                  class="mx-md-n5"
+                >
+                  <option
+                    [value]="page.value"
+                    *ngFor="let page of sizeOptions"
+                    >{{ page.name }}</option
+                  >
+                </select> -->
+                <ng-select
+                  [items]="sizeOptions"
+                  bindLabel="name"
+                  bindValue="value"
+                  [clearable]="false"
+                  [(ngModel)]="pageSize"
+                  (change)="changePagesize()"
+                  appendTo="body"
+                >
+                </ng-select>
+              </div>
+              <div class="text-md-right pagination-rounded">
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [collectionSize]="totalSize"
+                  [maxSize]="1"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                  (pageChange)="loadPage($event)"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+          <!-- End Pagination -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Order Management Section End -->

@@ -1,0 +1,75 @@
+.custom-card-container {
+  padding: 0 8px;
+  .custom-card-odd {
+    padding: 10px;
+    border-left: 3px solid #2a5a96;
+    background: #cccccc38;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    .card-text-color {
+      color: #5867dd;
+      font-weight: bold;
+    }
+  }
+  .custom-card-even {
+    padding: 10px;
+    border-left: 3px solid #34bfa3;
+    border-radius: 5px;
+    /* background: #f2e7fd; */
+    background: #34bfa305;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    .card-text-color {
+      color: #34bfa3;
+      font-weight: bold;
+    }
+  }
+}
+
+.clientOrder {
+  cursor: pointer;
+  color: blue;
+}
+
+th {
+  white-space: nowrap;
+  padding-right: 24px;
+}
+.table th,
+.table td:nth-child(7) {
+  white-space: nowrap;
+}
+
+.select_box select {
+  border: none;
+  background: transparent;
+  margin-top: 7px;
+  border: 1px solid #c1c1c1;
+  border-radius: 4px;
+  padding: 3px;
+  margin-top: 7px;
+}
+.select_box select:focus {
+  outline: none;
+}
+@media (min-width: 768px) {
+  .custom-card-container {
+    max-width: 14%;
+    p {
+      white-space: nowrap;
+    }
+  }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  .custom-card-container {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+.nodata {
+  color: #6c757d !important;
+}
+.filter-name {
+  font-weight: 600;
+  font-size: 13px;
+  padding-left: 3px;
+}

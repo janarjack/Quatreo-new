@@ -1,0 +1,50 @@
+image: docker:latest
+
+services:
+  - docker:dind
+
+variables:
+#   UATSTACK_FILE: /home/qice/Quatreo/frontend/docker-compose.yaml
+  UATCODE_DIR: '/home/qice/Quatreo/frontend/app/code'
+  CACHE_URL: https://devops-pacewisdom-bucket.s3.ap-south-1.amazonaws.com/cloudFlare.sh
+  DOMAIN_NAME: pacewisdom.in
+#   VAULT_ADDR: 'https://vault.pacewisdom.com'
+
+before_script:
+  - echo "Pipeline started"
+
+stages:
+  - uatlinting
+  - uatbuild
+  - uatdeploy
+
+UATCodeanalysis:
+  stage: uatlinting
+  script:
+    - docker run --rm --name angularlint -v "$(pwd)":/code registryrepo.pacewisdom.com/angularnglint:latest /lintScript.sh
+  tags:
+    - qutreo-runner
+
+UAT-build:
+  stage: uatdeploy
+  only:
+    - UAT
+  script:
+    - rsync -avz --exclude '.git/' --exclude 'node_modules/' ./ $UATCODE_DIR --delete
+    - /home/qice/Quatreo/frontend/build.sh
+  tags:
+    - qutreo-runner
+
+UAT-deploy:
+  stage: uatdeploy
+  only:
+    - UAT
+  script:
+    - /home/qice/Quatreo/frontend/deploy.sh
+    - sleep 10
+  tags:
+    - qutreo-runner
+  when: manual
+  after_script:
+    - docker exec proxy_server nginx -s reload
+    - curl -s $CACHE_URL | bash -s $DOMAIN_NAME

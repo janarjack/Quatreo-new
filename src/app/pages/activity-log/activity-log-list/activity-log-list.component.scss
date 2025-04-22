@@ -1,0 +1,30 @@
+.nodata {
+  color: #6c757d !important;
+}
+.select_box select {
+  border: none;
+  background: transparent;
+  margin-top: 7px;
+  border: 1px solid #c1c1c1;
+  border-radius: 4px;
+  padding: 3px;
+  margin-top: 7px;
+}
+.select_box select:focus {
+  outline: none;
+}
+i.fa-calendar {
+  position: absolute;
+  top: 10px;
+  left: 235px;
+  pointer-events: none;
+}
+th {
+  white-space: nowrap;
+  padding-right: 24px;
+}
+
+.log {
+  word-wrap: break-word;
+  max-width: 365px;
+}

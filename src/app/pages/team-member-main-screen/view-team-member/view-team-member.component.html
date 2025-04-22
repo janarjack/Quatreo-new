@@ -1,0 +1,322 @@
+<div class="modal-header bg-dark">
+  <h4 class="modal-title text-white">View Order Detail</h4>
+  <button
+    type="button"
+    class="close text-white"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body p-3">
+  <app-ui-preloader [display]="loading"></app-ui-preloader>
+
+  <div>
+    <!-- row -->
+    <div class="form-group col-md-12 row m-0 p-0">
+      <div class="col-md-4 col-sm-12 mb-2">
+        <label for="name">Client Order</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          readonly
+          [value]="
+            (viewDetail?.userOrderDetails)[0].userOrder.order.clientOrderNumber
+          "
+        />
+      </div>
+      <div class="col-md-4 col-sm-12 mb-2">
+        <label for="name">Quatreo Order</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          readonly
+          [value]="
+            (viewDetail?.userOrderDetails)[0].userOrder.order.quatreoOrderNumber
+          "
+        />
+      </div>
+      <div class="col-md-4 col-sm-12 mb-2">
+        <label>Received Date</label>
+        <div class="input-group clockpicker">
+          <input
+            type="text"
+            class="form-control"
+            readonly
+            [value]="
+              convertDateToString(
+                (viewDetail?.userOrderDetails)[0].userOrder?.order?.recievedDate
+              ) | date: 'MM/dd/yyyy'
+            "
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- row -->
+    <div class="form-group col-md-12 row m-0 p-0">
+      <div class="col-md-4 col-sm-12 mb-2">
+        <label for="name">Product</label>
+        <div class="card skill-list">
+          <div class="card-body cart_title scroll-y">
+            <span
+              *ngFor="
+                let list of (viewDetail?.userOrderDetails)[1]?.productArray;
+                let i = index
+              "
+            >
+              {{ list?.productName }}
+              <span
+                *ngIf="
+                  (viewDetail?.userOrderDetails)[1]?.productArray.length - 1 > i
+                "
+                >,</span
+              >
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-12 mb-2">
+        <label for="name">Type</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          readonly
+          [value]="(viewDetail?.userOrderDetails)[0].userOrder.order?.orderType"
+        />
+      </div>
+      <div class="col-md-4 col-sm-12 mb-2">
+        <label for="name">Tax Amount</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          readonly
+          [value]="
+            (viewDetail?.userOrderDetails)[0]?.userOrder?.taxAmount
+              ? (viewDetail?.userOrderDetails)[0].userOrder.taxAmount
+              : '-'
+          "
+        />
+      </div>
+    </div>
+    <div class="form-group col-md-12 row m-0 p-0">
+      <div class="col-md-4 col-sm-12 mb-2">
+        <label for="name">Assessment Value</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          readonly
+          [value]="
+            (viewDetail?.userOrderDetails)[0]?.userOrder?.assesment
+              ? (viewDetail?.userOrderDetails)[0].userOrder.assesment
+              : '-'
+          "
+        />
+      </div>
+      <div class="col-md-4 col-sm-12 mb-2">
+        <label for="name">ECD Date</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          readonly
+          [value]="
+            (viewDetail?.userOrderDetails)[0]?.userOrder?.expectedClosingDate
+              ? ((viewDetail?.userOrderDetails)[0].userOrder
+                  .expectedClosingDate | date: 'MM/dd/yyyy')
+              : '-'
+          "
+        />
+      </div>
+      <div class="col-md-4 col-sm-12 mb-2">
+        <label for="name">Deliquency Amount</label>
+        <input
+          type="text"
+          class="form-control"
+          id="name"
+          readonly
+          [value]="
+            (viewDetail?.userOrderDetails)[0]?.userOrder?.deliquencyAmount
+              ? (viewDetail?.userOrderDetails)[0].userOrder.deliquencyAmount
+              : '-'
+          "
+        />
+      </div>
+    </div>
+    <!-- row -->
+    <div class="form-group col-md-12 row m-0 p-0">
+      <div class="col-md-3 col-sm-12 mb-2">
+        <h5>Guide</h5>
+      </div>
+    </div>
+
+    <div class="form-group col-md-12 row m-0 p-0">
+      <div class="col-md-12 col-sm-12 mb-2">
+        <label for="name">Instruction From Client</label>
+        <div class="card skill-list">
+          <div class="card-body cart_title scroll-y">
+            <div
+              *ngFor="
+                let file of viewDetail.userOrderDetails[2].clientGuideLine;
+                let i = index
+              "
+            >
+              <a (click)="ViewFile(file, content)">
+                {{ file?.fileName }}
+              </a>
+              <span
+                *ngIf="
+                  viewDetail.userOrderDetails[2].clientGuideLine.length - 1 > i
+                "
+                >,</span
+              >
+            </div>
+            <div
+              *ngIf="viewDetail.userOrderDetails[2].clientGuideLine.length == 0"
+            >
+              No Files
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group col-md-12 row m-0 p-0">
+      <div class="col-md-12 col-sm-12 mb-2">
+        <label for="name">Web Links</label>
+        <div class="card skill-list">
+          <div class="card-body cart_title scroll-y">
+            <div
+              *ngFor="
+                let link of viewDetail.userOrderDetails[3].countyWebLink;
+                let i = index
+              "
+            >
+              <div>
+                <span>{{ link.webLinkLabel + ' : ' }}</span>
+                <a [href]="link.webLinkURL" target="_blank">
+                  {{ link?.webLinkURL }}
+                </a>
+                <span
+                  *ngIf="
+                    viewDetail.userOrderDetails[3].countyWebLink.length - 1 > i
+                  "
+                  >,</span
+                >
+              </div>
+            </div>
+            <div
+              *ngIf="viewDetail.userOrderDetails[3].countyWebLink.length == 0"
+            >
+              No Links Available
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      *ngFor="let sub of (viewDetail?.userOrderDetails)[1]?.subProduct"
+      class="form-group col-md-12 row m-0 p-0"
+    >
+      <div class="col-md-12 col-sm-12 mb-2">
+        <div class="card skill-list">
+          <div class="card-body cart_title scroll-y">
+            <div class="custom-fw">{{ sub.subProductName }}</div>
+            <div>
+              <span class="custom-fw">status:</span>
+              {{ sub.orderAttachments?.statusMaster?.statusName }}
+              <span *ngIf="!sub.orderAttachments?.statusMaster?.statusName">
+                No Data Available
+              </span>
+            </div>
+            <div>
+              <span class="custom-fw">attachments:</span
+              ><a (click)="viewOrderAttachments(sub.orderAttachments, content)">
+                {{ sub.orderAttachments?.fileName }}</a
+              >
+              <span *ngIf="!sub.orderAttachments?.fileName">
+                No Data Available
+              </span>
+            </div>
+            <div>
+              <span class="custom-fw">Action Date:</span>
+              {{ sub.orderAttachments?.nextActionDate | date: 'MM/dd/yyy' }}
+              <span *ngIf="!sub.orderAttachments?.nextActionDate">
+                No Data Available
+              </span>
+            </div>
+            <!-- <span *ngFor="let data of viewDetails.productArray; let i = index">
+                  {{ data?.productName }}
+                  <span *ngIf="viewDetails.productArray.length - 1 > i">,</span>
+                </span> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- row -->
+    <div class="form-group col-md-12 row m-0 p-0">
+      <div class="col-md-12 col-sm-12 mb-2">
+        <label class="mb-1 mt-3 font-weight-medium text-muted">Log</label>
+
+        <div class="card skill-list">
+          <div class="card-body cart_title scroll-y">
+            {{ (viewDetail?.userOrderDetails)[0]?.userOrder?.log }}
+            <span *ngIf="!(viewDetail?.userOrderDetails)[0].userOrder.log">
+              No Data Available
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- form buttons -->
+    <div class="text-right">
+      <button
+        type="button"
+        class="btn btn-danger ml-1"
+        (click)="activeModal.dismiss('Cross click')"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+<ng-template #content role="document" let-modal="close">
+  <div class="modal-header bg-dark">
+    <h4 class="modal-title text-white">View File</h4>
+    <button
+      type="button"
+      class="close text-white"
+      aria-label="Close"
+      (click)="modal('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body p-3">
+    <div class="text-left">
+      <div *ngIf="image">
+        <img [src]="image" alt="" class="view-image" />
+      </div>
+      <div *ngIf="pdf">
+        <iframe [src]="pdf" type="application/pdf" class="view-pdf"></iframe>
+      </div>
+      <div class="text-right mt-2">
+        <button
+          type="button"
+          class="btn btn-danger ml-1"
+          (click)="modal('close click')"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>

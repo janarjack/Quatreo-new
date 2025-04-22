@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,CAAC,CAAC;EACA,MAAM,EAAE,OAAO;EACf,KAAK,EAAE,IAAI;CACZ",
+    "sources": [
+        "bulk-orders-list.component.scss"
+    ],
+    "names": [],
+    "file": "bulk-orders-list.component.css"
+}

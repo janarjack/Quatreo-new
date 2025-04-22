@@ -1,0 +1,315 @@
+<div class="modal-header bg-dark">
+  <h4 class="modal-title text-white">Order Detail</h4>
+  <button type="button" class="close text-white" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body p-3 custom-modal-body">
+  <div class="text-left">
+    <form (ngSubmit)="saveData()" [formGroup]="auditScreenForm">
+      <app-ui-preloader [display]="loading"></app-ui-preloader>
+      <div class="form-group col-md-12 row m-0 p-0">
+        <div class="col-md-4 col-sm-12 mb-2">
+          <label for="name">Client Order</label>
+          <input type="text" class="form-control" id="name" readonly placeholder="Enter Client Order"
+            formControlName="clientOrder" [ngClass]="{ 'is-invalid': submitted && form.clientOrder?.errors }" />
+          <div *ngIf="submitted && form.clientOrder?.errors" class="invalid-feedback">
+            <span *ngIf="form.clientOrder?.errors.required">This value is required.</span>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-12 mb-2">
+          <label for="name">Quatreo Order</label>
+          <input type="text" class="form-control" id="name" readonly formControlName="quatreoOrder"
+            placeholder="Enter Quatreo Order" [ngClass]="{ 'is-invalid': submitted && form.quatreoOrder?.errors }" />
+          <div *ngIf="submitted && form.quatreoOrder?.errors" class="invalid-feedback">
+            <span *ngIf="form.quatreoOrder?.errors.required">This value is required.</span>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-12 mb-2">
+          <label>Received Date</label>
+          <div class="position-relative">
+            <input class="form-control" #datepickerMDY1="bsDatepicker" bsDatepicker formControlName="receivedDate"
+              [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY' }" onkeydown="return false" [attr.disabled]="true" [ngClass]="{
+                'is-invalid': submitted && form.receivedDate?.errors
+              }" />
+            <i class="fa fa-calendar"></i>
+            <div *ngIf="submitted && form.receivedDate?.errors" class="invalid-feedback">
+              <span *ngIf="form.receivedDate?.errors.required">This value is required.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- row -->
+      <div class="form-group col-md-12 row m-0 p-0">
+        <div class="col-md-4 col-sm-12 mb-2">
+          <label for="name">Product</label>
+          <div class="card skill-list">
+            <div class="card-body cart_title scroll-y">
+              <span *ngFor="let list of subproducts; let i = index">
+                {{ list?.productName }}
+                <span *ngIf="subproducts.length - 1 > i">,</span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-12 mb-2">
+          <label for="name">Type</label>
+          <input type="text" class="form-control" id="name" readonly formControlName="type" placeholder="Enter Type"
+            [ngClass]="{ 'is-invalid': submitted && form.type?.errors }" />
+          <div *ngIf="submitted && form.type?.errors" class="invalid-feedback">
+            <span *ngIf="form.type?.errors.required">This value is required.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- row -->
+      <div class="form-group col-md-12 row m-0 p-0">
+        <div class="col-md-3 col-sm-12 mb-2">
+          <h5>Guide</h5>
+        </div>
+      </div>
+
+      <!-- row -->
+      <div class="form-group col-md-12 row m-0 p-0">
+        <div class="col-md-12 col-sm-12 mb-2">
+          <label for="name">Instruction From Client</label>
+          <div class="card skill-list">
+            <div class="card-body cart_title scroll-y">
+              <div *ngFor="
+                  let file of orderdata.userOrderDetails[2].clientGuideLine;
+                  let i = index
+                ">
+                <a (click)="ViewFile(file, content)">
+                  {{ file?.fileName }}
+                </a>
+                <span *ngIf="
+                    orderdata.userOrderDetails[2].clientGuideLine.length - 1 > i
+                  ">,</span>
+              </div>
+              <div *ngIf="
+                  orderdata.userOrderDetails[2].clientGuideLine.length == 0
+                ">
+                No Files
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-12 row m-0 p-0">
+        <div class="col-md-12 col-sm-12 mb-2">
+          <label for="name">Web Links</label>
+          <div class="card skill-list">
+            <div class="card-body cart_title scroll-y">
+              <div *ngFor="
+                  let link of orderdata.userOrderDetails[3].countyWebLink;
+                  let i = index
+                ">
+                <div>
+                  <span>{{ link.webLinkLabel + ' : ' }}</span>
+                  <a [href]="link.webLinkURL" target="_blank">
+                    {{ link?.webLinkURL }}
+                  </a>
+                  <span *ngIf="
+                      orderdata.userOrderDetails[3].countyWebLink.length - 1 > i
+                    ">,</span>
+                </div>
+              </div>
+              <div *ngIf="orderdata.userOrderDetails[3].countyWebLink.length == 0">
+                No Links Available
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-12 row m-0 p-0 text-center font-weight-bold">
+        <div class="col-md-2 col-sm-12">
+          <!-- <h5 >Guide</h5> -->
+        </div>
+        <div class="col-md-4 col-sm-12 offset-md-1">
+          <div class="my-2">Status</div>
+        </div>
+        <div class="col-md-2 col-sm-12">
+          <div class="my-2">Attachment</div>
+        </div>
+        <div class="col-md-3 col-sm-12">
+          <div class="my-2">Next Action Date</div>
+        </div>
+      </div>
+      <div class="form-group col-md-12 row m-0 p-0 mb-2" *ngFor="
+          let item of this.orderdata.userOrderDetails[1].subProduct;
+          let i = index;
+          let last = last
+        ">
+        <div class="col-md-12 p-0 d-flex flex-wrap">
+          <div class="col-md-2 col-sm-12 mb-1 offset-md-1">
+            <ul class="pl-3">
+              <li>{{ item.subProductName }}</li>
+            </ul>
+          </div>
+          <div class="col-md-4 col-sm-12 mb-1">
+            <input type="text" class="form-control" readonly
+              value="{{ item.orderAttachments?.statusMaster?.statusName }}" />
+          </div>
+          <div class="col-md-2 col-sm-12 mb-1 text-center">
+            <button class="btn viewbtn" (click)="viewOrderAttachments(item, content)">
+              View
+            </button>
+          </div>
+          <div class="col-md-3 col-sm-12 mb-1">
+            <input type="text" class="form-control" readonly value="{{
+                item.orderAttachments?.nextActionDate
+                  ? (item.orderAttachments?.nextActionDate | date: 'MM/dd/yyyy')
+                  : '-'
+              }}" />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-12 row m-0 p-0">
+        <div class="col-md-4 col-sm-12 mb-2">
+          <label for="name">Tax Amount</label>
+          <input type="text" class="form-control" id="name" readonly [value]="
+              (orderdata?.userOrderDetails)[0]?.userOrder?.taxAmount
+                ? (orderdata?.userOrderDetails)[0].userOrder.taxAmount
+                : '-'
+            " />
+          <div *ngIf="submitted && form.tax?.errors" class="invalid-feedback">
+            <span *ngIf="form.tax?.errors.required">This value is required.</span>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-12 mb-2">
+          <label for="name">Assessment Value</label>
+          <input type="text" class="form-control" id="name" readonly [value]="
+              (orderdata?.userOrderDetails)[0]?.userOrder?.assesment
+                ? (orderdata?.userOrderDetails)[0].userOrder.assesment
+                : '-'
+            " />
+          <div *ngIf="submitted && form.assessment?.errors" class="invalid-feedback">
+            <span *ngIf="form.assessment?.errors.required">This value is required.</span>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12 mb-2">
+          <label>ECD Date</label>
+          <div class="position-relative">
+            <input type="text" class="form-control" id="name" readonly [value]="
+                (orderdata?.userOrderDetails)[0]?.userOrder?.expectedClosingDate
+                  ? ((orderdata?.userOrderDetails)[0].userOrder
+                      .expectedClosingDate | date: 'MM/dd/yyyy')
+                  : '-'
+              " />
+            <i class="fa fa-calendar"></i>
+            <div *ngIf="submitted && form.ecd?.errors" class="invalid-feedback">
+              <span *ngIf="form.ecd?.errors.required">This value is required.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-12 row m-0 p-0">
+        <div class="col-md-4 col-sm-12 mb-2">
+          <label for="name">Deliquency Amount</label>
+          <input type="text" class="form-control" id="name" readonly [value]="
+              (orderdata?.userOrderDetails)[0]?.userOrder?.deliquencyAmount
+                ? (orderdata?.userOrderDetails)[0].userOrder.deliquencyAmount
+                : '-'
+            " />
+        </div>
+      </div>
+      <!-- row -->
+      <div class="form-group col-md-12 row m-0 p-0">
+        <div class="col-md-6 col-sm-12 mb-2">
+          <label class="mb-1 mt-3 font-weight-medium">Log</label>
+
+          <div class="card skill-list">
+            <div class="card-body cart_title scroll-y">
+              {{ (orderdata?.userOrderDetails)[0]?.userOrder?.log }}
+              <span *ngIf="!(orderdata?.userOrderDetails)[0].userOrder.log">
+                No Data Available
+              </span>
+            </div>
+          </div>
+          <div *ngIf="submitted && form.log?.errors" class="invalid-feedback">
+            <span *ngIf="form.log?.errors.required">This value is required.</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <h5>Audit Findings</h5>
+      </div>
+      <div class="col-md-12 col-sm-12 d-flex mb-1">
+        <div class="col-md-2">
+          <label>Accurate</label>
+        </div>
+        <div class="col-md-9">
+          <div class="radio form-check-inline px-2" *ngFor="let opt of accurateList">
+            <input type="radio" id="inlineRadio1" [value]="opt.val" name="accurate" formControlName="accurate"
+              (change)="isAccurate(opt.val)" />
+            <label for="inlineRadio1"> {{ opt.name }} </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-12 row m-0 p-0 text-center">
+        <div class="col-md-2 col-sm-12">
+          <label> Error Field</label>
+        </div>
+        <div class="col-md-2 col-sm-12 text-center">
+          <label>Error Data</label>
+        </div>
+        <div class="col-md-2 col-sm-12">
+          <label>Error Type</label>
+        </div>
+        <div class="col-md-2 col-sm-12">
+          <label>RCA</label>
+        </div>
+        <div class="col-md-3 col-sm-12">
+          <label>Corrective Step
+{{errorFeildsDisable}}
+
+          </label>
+        </div>
+        <div class="col-md-1 col-sm-12">
+          <div>
+            <i class="fas fa-plus-circle mr-1" (click)="addEmployee()">Add</i>
+          </div>
+        </div>
+      </div>
+      <div formArrayName="errorFeilds" *ngFor="
+          let item of auditScreenForm.get('errorFeilds')?.controls;
+          let i = index;
+          let last = last
+        ">
+        <div class="form-group col-md-12 row m-0 p-0 mb-1" [formGroupName]="i">
+          <div class="col-md-2 col-xs-12 mb-1">
+            <input type="text" class="form-control" [attr.disabled]="errorFeildsDisable ? '' : null" formControlName="errroField" />
+          </div>
+          <div class="col-md-2 col-xs-12 mb-1 text-center">
+            <input type="text" class="form-control" [attr.disabled]="errorFeildsDisable ? '' : null" formControlName="errorData" />
+          </div>
+          <div class="col-md-2 col-sm-12 mb-1">
+            <input type="text" class="form-control" [attr.disabled]="errorFeildsDisable ? '' : null" formControlName="errorType" />
+          </div>
+          <div class="col-md-2 col-sm-12 mb-1">
+            <input type="text" class="form-control" [attr.disabled]="errorFeildsDisable ? '' : null" formControlName="errorRca" />
+          </div>
+          <div class="col-md-3 col-sm-12 mb-1">
+            <input type="text" class="form-control" [attr.disabled]="errorFeildsDisable ? '' : null" formControlName="correctiveSteps" />
+          </div>
+          <div class="col-md-1 col-sm-12 mb-1">
+            <div class="p4">
+              <i class="fas fa-trash" (click)="removeEmployee(i)"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+         <div class="text-right">
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="button" class="btn btn-danger ml-1" (click)="activeModal.dismiss('Cross click')">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

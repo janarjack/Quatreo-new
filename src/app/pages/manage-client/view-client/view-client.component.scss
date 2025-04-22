@@ -1,0 +1,24 @@
+.skill-list{
+    border: 1px solid rgba(0,0,0,0.125);
+    border-radius: .25rem; 
+    background: transparent;
+    margin-bottom: 0px;
+}
+.card-body{
+    padding: 0.45rem 0.9rem;
+}
+.scroll-y{
+    height: 80px;
+    overflow-y: auto;
+}
+.view-pdf{
+    width: 100%;
+    min-height: 400px;
+}
+a{
+    color:blue;
+    cursor: pointer;
+}
+.view-image{
+    max-width: 100%;
+}

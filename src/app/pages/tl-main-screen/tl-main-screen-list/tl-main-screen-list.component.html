@@ -1,0 +1,225 @@
+<div class="container-fluid">
+  <app-page-title title="TL Main Screen" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center pb-2 mb-4 bb-1-grey">
+            <div class="col-12 col-sm-5 col-md-5 font-weight-bold header-title">
+              TL Main Screen
+            </div>
+            <div class="row col-sm-7 col-md-7">
+              <div class="col-12 col-sm-4 col-md-5 text-md-right mb-1">
+                <a href="javascript: void(0);" class="btn btn-danger font-weight-bold"><i
+                    class="mdi mdi-plus-circle mr-1"></i> Export to PDF</a>
+              </div>
+              <div class="col-12 col-sm-4 col-md-4 text-md-right mb-1">
+                <a href="javascript: void(0);" class="btn btn-danger font-weight-bold filterbtn"><i
+                    class="mdi mdi-plus-circle mr-1"></i> Export to CSV</a>
+              </div>
+              <div class="col-12 col-sm-4 col-md-3 text-md-right mb-1">
+                <a href="javascript: void(0);" class="btn btn-danger font-weight-bold filterbtn"
+                  (click)="filterUserdata()"><i class="mdi mdi-plus-circle mr-1"></i> Filter </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- counts -->
+          <div class="row">
+            <div class="col-12 col-sm-6 col-md-2 custom-card-container">
+              <div class="card-box custom-card-odd">
+                <h4 class="text-dark mt-1">350</h4>
+                <p class="card-text-color m-0">Total Orders</p>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-2 custom-card-container">
+              <div class="card-box custom-card-even">
+                <h4 class="text-dark mt-1">ECD-39</h4>
+                <p class="card-text-color m-0">Past Due</p>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-2 custom-card-container">
+              <div class="card-box custom-card-odd ">
+                <h4 class="text-dark mt-1">39</h4>
+                <p class="card-text-color m-0">ECD Due Today</p>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-2 custom-card-container">
+              <div class="card-box custom-card-even">
+                <h4 class="text-dark mt-1">30</h4>
+                <p class="card-text-color m-0">ON-Hold</p>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-2 custom-card-container">
+              <div class="card-box custom-card-odd">
+                <h4 class="text-dark mt-1">30</h4>
+                <p class="card-text-color m-0">WOCA</p>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-2 custom-card-container">
+              <div class="card-box custom-card-even">
+                <h4 class="text-dark mt-1">350</h4>
+                <p class="card-text-color m-0">Rush</p>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-2 custom-card-container">
+              <div class="card-box custom-card-odd">
+                <h4 class="text-dark mt-1">QC-20</h4>
+                <p class="card-text-color m-0">Untouch</p>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-md-2">
+            <!-- client filter -->
+            <!-- <div class="col-md-4 col-sm-12">
+                <label for="role">Client</label>
+                <ng-select [items]="selectClient"></ng-select>
+              </div> -->
+
+            <div class="form-group col-md-4 col-sm-12">
+              <!-- <label for="inputState" class="col-form-label">State</label> -->
+              <!-- <select id="inputState" class="form-control">
+                <option>Filter by Client</option>
+                <option>Option 1</option>
+                <option>Option 2</option>
+                <option>Option 3</option>
+              </select> -->
+              <ng-select [clearable]="false"
+                ></ng-select>
+            </div>
+            <!-- <div class="col-sm-12 col-md-4">
+              <div class="dataTables_length" id="tickets-table_length"><label
+                  class="d-inline-flex align-items-center">Show
+                  <select name="tickets-table_length" aria-controls="tickets-table"
+                    class="custom-select custom-select-sm form-control form-control-sm mx-2">
+                    <option [ngValue]="10">10</option>
+                    <option [ngValue]="25">25</option>
+                    <option [ngValue]="50">50</option>
+                    <option [ngValue]="100">100</option>
+                  </select> entries</label>
+              </div>
+            </div> -->
+            <!-- Table -->
+            <div class="table-responsive">
+              <table id="basic-datatable" class="table dt-responsive nowrap">
+                <thead>
+                  <tr>
+                    <th sortable="clientName">
+                      Client Name </th>
+                    <th sortable="clientOrder">
+                      Client Order</th>
+                    <th sortable="quatreoOrder">
+                      Quatreo Order</th>
+                    <th sortable="countyState">
+                      <!-- <form class="app-search">
+                      <div class="app-search-box">
+                        <div class="input-group search-background">
+                          <input type="text" class="form-control" placeholder="Search...">
+                          <div class="input-group-append">
+                            <button class="btn" type="submit">
+                              <i class="fe-search"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </form> -->
+                      County State</th>
+                    <th sortable="status">
+                      Status</th>
+                    <th sortable="user-tax">
+                      User -tax/MLS</th>
+                    <th sortable="eddDate">
+                      EDD date ECD date</th>
+                    <th sortable="priority">
+                      Priority</th>
+                    <th sortable="tax">
+                      Tax</th>
+                    <th sortable="utility">
+                      Utility</th>
+                    <th sortable="utility">
+                      Code</th>
+                    <th sortable="permit">
+                      Permit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let table of tableData">
+                    <td>
+                      <ngb-highlight [result]="table.clientName"></ngb-highlight>
+                    </td>
+                    <td>
+                      <ngb-highlight [result]="table.clientOrder"></ngb-highlight>
+                    </td>
+                    <td>
+                      <ngb-highlight [result]="table.quatreoOrder"></ngb-highlight>
+                    </td>
+                    <td>
+                      <ngb-highlight [result]="table.countyState"></ngb-highlight>
+                    </td>
+                    <td>
+                      <ngb-highlight [result]="table.status"></ngb-highlight>
+                    </td>
+                    <td>
+                      <ngb-highlight [result]="table.user"></ngb-highlight>-
+                      <ngb-highlight [result]="table.taxMLS"></ngb-highlight>
+                    </td>
+                    <td>
+                      <ngb-highlight [result]="table.eddDate"></ngb-highlight>
+                    </td>
+                    <td>
+                      <ngb-highlight [result]="table.priority"></ngb-highlight>
+                    </td>
+                    <td>
+                      <ngb-highlight [result]="table.tax"></ngb-highlight>
+                    </td>
+                    <td>
+                      <ngb-highlight [result]="table.utility"></ngb-highlight>
+                    </td>
+                    <td>
+                      <ngb-highlight [result]="table.code"></ngb-highlight>
+                    </td>
+                    <td>
+                      <ngb-highlight [result]="table.permit"></ngb-highlight>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="text-center " *ngIf="!tableData || tableData.length ==0">
+              <h5 class="nodata">No data available</h5>
+            </div>
+            <!-- End table -->
+
+
+
+          </div>
+          <!-- Pagination -->
+          <div class="row justify-content-md-between align-items-md-center mt-2"  *ngIf="tableData">
+            <div class="col-sm-12 col-md-5">
+              <div class="dataTables_info mb-2" id="tickets-table_info" role="status" aria-live="polite">Showing
+                {{((page-1)*pageSize)+1}} to
+                {{ (page-1 >= tableData.length/pageSize - 1) ? tableData.length : (page-1)*pageSize+pageSize| number:locale }}
+                of {{tableData.length}}
+                entries
+              </div>
+            </div>
+
+            <div class="col-sm-12 col-md-5 d-flex justify-content-end flex-wrap">
+              <div class="select_box">
+                <ng-select [items]="sizeOptions" bindLabel="name" bindValue="value" [clearable]="false"
+                  [(ngModel)]="pageSize" (change)="changePagesize()" appendTo="body">
+                </ng-select>
+              </div>
+              <div class="text-md-right pagination-rounded">
+                <ngb-pagination [(page)]="page" [pageSize]="pageSize" [collectionSize]="tableData.length" [maxSize]="1"
+                  [rotate]="true" [ellipses]="false" [boundaryLinks]="true"></ngb-pagination>
+              </div>
+            </div>
+          </div>
+            <!-- End Pagination -->
+            
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

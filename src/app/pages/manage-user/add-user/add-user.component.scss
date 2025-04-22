@@ -1,0 +1,44 @@
+#upload_button {
+    display: inline-block;
+  }
+#upload_button input[type=file] {
+    display:none;
+  }
+.upoloadfilebtn{
+    border-radius: 0 0.2rem 0.2rem 0;
+    background-color: #797979;
+    border-color: #858398;
+    cursor: pointer;
+}
+.select-mls-header{
+    font-weight: 600;
+}
+::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+  background-color: white;
+  border: 1px #ced4da solid;
+  color: black;
+}
+
+
+/* Border Color */
+::ng-deep .ng-select .ng-invalid .ng-touched .ng-select-container{
+  border-color: #f1556c;
+}
+/* Arrow Color */
+::ng-deep .ngSelect .ng-invalid .ng-touched .ng-arrow-wrapper .ng-arrow{
+  border-color: #f1556c transparent transparent
+}
+/* Placeholder Color */
+::ng-deep .ngSelect .ng-invalid .ng-touched .ng-select-container .ng-placeholder{
+  color: #f1556c;
+}
+
+::ng-deep .is-invalid .ng-select-container{
+  border-color: #f1556c !important;
+}
+.invalid{
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #f1556c;
+}

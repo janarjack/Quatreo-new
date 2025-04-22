@@ -1,0 +1,51 @@
+.clientOrder {
+  cursor: pointer;
+  color: blue;
+}
+
+th {
+  white-space: nowrap;
+  padding-right: 24px;
+}
+.table th,
+.table td:nth-child(7) {
+  white-space: nowrap;
+}
+
+.select_box select {
+  border: none;
+  background: transparent;
+  margin-top: 7px;
+  border: 1px solid #c1c1c1;
+  border-radius: 4px;
+  padding: 3px;
+  margin-top: 7px;
+}
+.select_box select:focus {
+  outline: none;
+}
+@media (min-width: 768px) {
+  .custom-card-container {
+    max-width: 14%;
+    p {
+      white-space: nowrap;
+    }
+  }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  .custom-card-container {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+.nodata {
+  color: #6c757d !important;
+}
+.filter-name {
+  font-weight: 600;
+  font-size: 13px;
+  padding-left: 3px;
+}
+.c-green {
+  color: green;
+}

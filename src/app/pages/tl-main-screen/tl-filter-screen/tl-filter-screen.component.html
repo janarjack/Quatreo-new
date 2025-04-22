@@ -1,0 +1,86 @@
+<div class="modal-header bg-dark">
+  <h4 class="modal-title text-white">Filter</h4>
+  <button type="button" class="close text-white" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body p-3">
+  <div class="text-left">
+    <form (ngSubmit)="saveData()" [formGroup]="filterForm">
+
+      <!-- clear button -->
+      <div class="text-right mb-2">
+          <button type="button" class="btn btn-success" (click)="clear()">Clear</button>
+      </div>
+
+      <!-- row -->
+      <div class="form-group col-md-12 row m-0 p-0">
+        <div class="col-md-6 col-sm-12 mb-2">
+          <label for="client">Client</label>
+          <input class="form-control" id="client" placeholder="Client Name" formControlName="client">
+        </div>
+
+        <div class="col-md-6 col-sm-12 mb-2">
+          <label>ECD Date Range</label>
+            <ng-template #t let-date let-focused="focused">
+              <span class="custom-day" [class.focused]="focused" [class.range]="isRange(date)"
+                [class.faded]="isHovered(date) || isInside(date)" (mouseenter)="hoveredDate = date"
+                (mouseleave)="hoveredDate = null">
+                {{ date.day }}
+              </span>
+            </ng-template>
+
+            <input type="text" class="form-control date" (click)="hidden=!hidden" name="daterange" autocomplete="off" formControlName="dateRange"
+              [(ngModel)]="selected"/>
+              <ngb-datepicker #dp (select)="onDateSelection($event)" [displayMonths]="2" [dayTemplate]="t"
+              outsideDays="hidden" [hidden]="hidden">
+            </ngb-datepicker>
+        </div>
+      </div>
+
+      <!-- row -->
+      <div class="form-group  col-md-12 row m-0 p-0">
+        <div class="col-md-6 col-sm-12 mb-2">
+          <!-- <select id="inputUser" class="form-control" formControlName="user">
+            <option>Select User</option>
+            <option>Option 1</option>
+            <option>Option 2</option>
+            <option>Option 3</option>
+        </select> -->
+        <ng-select [items]="sizeOptions" formControlName="user" [clearable]="false">
+      </ng-select>
+        </div>
+        <div class="col-md-6 col-sm-12 mb-2">
+         
+          <ng-select [items]="sizeOptions" formControlName="status" [clearable]="false">
+          </ng-select>
+            <!-- <select id="inputStatus" class="form-control" formControlName="status">
+              <option>Select Status</option>
+              <option>Option 1</option>
+              <option>Option 2</option>
+              <option>Option 3</option>
+          </select> -->
+          <!-- <div *ngIf="submitted && form.status?.errors" class="invalid-feedback">
+            <span *ngIf="form.status?.errors.required">This value is required.</span>
+          </div>
+          -->
+        </div>
+        
+      </div>
+
+      <!-- row -->
+      <div class="form-group  col-md-12 row m-0 p-0 mb-2">
+        <div class="col-md-6 col-sm-12">
+          <label for="clientOrder">Client Order</label>
+          <input class="form-control" id="clientOrder" placeholder="Client Order" formControlName="clientOrder">
+        </div>
+      </div>
+
+      <!-- form buttons -->
+      <div class="text-right">
+        <button type="submit" class="btn btn-success">Apply</button>
+        <button type="button" class="btn btn-danger ml-1" (click)="activeModal.dismiss('Cross click')">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

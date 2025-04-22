@@ -1,0 +1,133 @@
+<!-- Bulk Order Section Start -->
+<div class="modal-header bg-dark">
+  <h4 class="modal-title text-white">Error List</h4>
+  <button
+    type="button"
+    class="close text-white"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body p-3">
+  <div class="text-left">
+    <!-- <form (ngSubmit)="saveData()" [formGroup]="overtimeForm"> -->
+    <!-- row -->
+    <div class="table-responsive">
+      <table id="basic-datatable" class="table dt-responsive nowrap">
+        <thead>
+          <tr class="text-capitalize">
+            <!-- <th sortable="slno">SL.No</th> -->
+            <th sortable="clientName">Line Number</th>
+
+            <th sortable="clientName">Error</th>
+            <!-- <th sortable="clientOrder">Status</th>
+              <th sortable="quatreoOrder">Number of Success Order</th>
+              <th sortable="countyState">Number Of Failed Order</th> -->
+            <!-- <th>Client</th> -->
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let table of tableData
+                | slice: (page - 1) * pageSize:(page - 1) * pageSize + pageSize
+            "
+          >
+            <td>
+              <ngb-highlight [result]="table?.LineError"></ngb-highlight>
+            </td>
+            <td>
+              {{ table?.message }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div
+      class="row justify-content-md-between align-items-md-center mt-2"
+      *ngIf="tableData"
+    >
+      <div class="col-sm-12 col-md-5">
+        <div
+          class="dataTables_info mb-2"
+          id="tickets-table_info"
+          role="status"
+          aria-live="polite"
+          *ngIf="totalSize > 0"
+        >
+          Showing
+          {{ (page - 1) * pageSize + 1 }} to
+          {{
+            page - 1 >= totalSize / pageSize - 1
+              ? totalSize
+              : ((page - 1) * pageSize + pageSize | number: locale)
+          }}
+          of {{ totalSize }}
+          entries
+        </div>
+      </div>
+
+      <div
+        class="col-sm-12 col-md-5 d-flex justify-content-end flex-wrap"
+        *ngIf="totalSize > 0"
+      >
+        <div class="select_box">
+          <!-- <select
+              name=""
+              id=""
+              [(ngModel)]="pageSize"
+              (change)="changePagesize()"
+              class="mx-md-n5"
+            >
+              <option
+                [value]="page.value"
+                *ngFor="let page of sizeOptions"
+                >{{ page.name }}</option
+              >
+            </select> -->
+          <ng-select
+            [items]="sizeOptions"
+            bindLabel="name"
+            bindValue="value"
+            [clearable]="false"
+            [(ngModel)]="pageSize"
+            place="top"
+          >
+          </ng-select>
+        </div>
+        <div class="text-md-right pagination-rounded">
+          <ngb-pagination
+            [(page)]="page"
+            [pageSize]="pageSize"
+            [collectionSize]="totalSize"
+            [maxSize]="1"
+            [rotate]="true"
+            [ellipses]="false"
+            [boundaryLinks]="true"
+          ></ngb-pagination>
+        </div>
+      </div>
+    </div>
+    <!-- buttons -->
+    <div class="text-right">
+      <button type="button" class="btn btn-success" (click)="downloadErrorFile()">
+        <i class="fas fa-download"></i>
+        Download File<span
+          class="spinner-border spinner-border-sm ml-1"
+          aria-hidden="true"
+          *ngIf="iscsvloading"
+        ></span>
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger ml-1"
+        (click)="activeModal.dismiss('Cross click')"
+      >
+        Close
+      </button>
+    </div>
+  </div>
+</div>

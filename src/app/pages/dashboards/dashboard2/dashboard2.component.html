@@ -1,0 +1,75 @@
+<div class="container-fluid">
+  <app-page-title title="Dashboard 2" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+
+  <div class="row">
+    <ng-template [ngTemplateOutlet]="WidgetData" [ngTemplateOutletContext]="{widget: widget}"
+      *ngFor="let widget of widget"></ng-template>
+  </div>
+
+  
+
+  <!-- <div class="row"> -->
+    <!-- Table -->
+    <!-- <div class="col-xl-12">
+      <app-portlet title="Top Selling Products" color="white" headerClass="title header-title border-0 mt-1"
+        (onContentRefresh)="contentRefresh()">
+        <div class="card-body pt-0">
+          <div class="table-responsive">
+            <table class="table table-hover table-centered mb-0">
+              <thead>
+                <tr>
+                  <th>Product Id</th>
+                  <th>Product Name</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Amount</th>
+                  <th>Date</th>
+                  <th>Sales</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngFor="let sellingData of productData">
+                  <td>{{ sellingData.productid }}</td>
+                  <td>{{ sellingData.name }}</td>
+                  <td>{{ sellingData.price }}</td>
+                  <td>{{ sellingData.quantity }}</td>
+                  <td>{{ sellingData.amount }}</td>
+                  <td>{{ sellingData.date }}</td>
+                  <td>{{ sellingData.sales }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </app-portlet>
+    </div> -->
+  <!-- </div> -->
+
+</div>
+
+<ng-template #WidgetData let-widget='widget'>
+  <div class="col-md-6 col-xl-3">
+    <div class="card-box">
+      <div class="row">
+        <div class="col-6">
+          <div class="avatar-sm bg-{{widget.color}} rounded">
+            <i class="{{widget.icon}} avatar-title font-22 text-white"></i>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="text-right">
+            <h3 class="text-dark my-1"><span CountTo="0" [from]="0" [duration]="1">{{widget.value}}</span>
+            </h3>
+            <p class="text-muted mb-1 text-truncate">{{widget.text}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-3">
+        <h6 class="text-uppercase">Target <span class="float-right">0%</span></h6>
+        <ngb-progressbar [type]="widget.color" value="0" height="5px" class="m-0">
+        </ngb-progressbar>
+      </div>
+    </div> <!-- end card-box-->
+  </div> <!-- end col -->
+</ng-template>

@@ -1,0 +1,153 @@
+<div class="modal-header bg-dark">
+  <h4 class="modal-title text-white">Add Activity Log</h4>
+  <button
+    type="button"
+    class="close text-white"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<!-- Modal body -->
+<div class="modal-body p-3">
+  <div class="text-left">
+    <form (ngSubmit)="saveData()" [formGroup]="overtimeForm">
+      <!-- row -->
+      <div class="form-group col-md-12 row m-0 p-0 mb-2">
+        <div class="col-md-4 col-sm-12">
+          <label for="userName"
+            >Login Time<span class="text-danger">*</span></label
+          >
+          <input
+            class="form-control"
+            type="text"
+            placeholder="Enter Start Time"
+            [value]="loginTime"
+            readonly
+          />
+        </div>
+      </div>
+
+      <!-- row -->
+      <div class="form-group col-md-12 row m-0 p-0 mb-2">
+        <div class="col-md-12 col-sm-12">
+          <h5>Non Production Time</h5>
+        </div>
+      </div>
+
+      <div class="form-group col-md-12 row m-0 p-0 mb-2">
+        <div class="col-md-4 col-sm-12">
+          <label for="category"
+            >Category<span class="text-danger">*</span></label
+          >
+          <ng-select
+            class="ngSelect"
+            [items]="selectCategory"
+            formControlName="category"
+            [ngClass]="{ 'is-invalid': submitted && form.category?.errors }"
+          ></ng-select>
+          <div
+            *ngIf="submitted && form.category?.errors"
+            class="invalid-feedback d-bock"
+          >
+            <span *ngIf="form.category?.errors.required"
+              >This value is required.</span
+            >
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <label for="startTime"
+            >Start Time<span class="text-danger">*</span></label
+          >
+               <div class="ngx-timepicker-field-example form-control">
+              <ngx-timepicker-field [format]="24" 
+              [clockTheme]="darkTheme"  formControlName="startTime"
+              [(ngModel)]="mintime"
+              [ngClass]="{ 'is-invalid': submitted && form.startTime?.errors }"
+              ></ngx-timepicker-field>
+          </div>
+     
+                   <div
+            *ngIf="submitted && form.startTime?.errors"
+            class="invalid-feedback d-block"
+          >
+            <span *ngIf="form.startTime?.errors.required"
+              >This value is required.</span
+            >
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12">
+          <label for="endTime"
+            >End Time<span class="text-danger">*</span></label
+          >
+          <div class="ngx-timepicker-field-example form-control">
+            <ngx-timepicker-field [format]="24" 
+            [clockTheme]="darkTheme"  formControlName="endTime"
+            [disabled]="mintime.length === 0 ? true : false"
+            [ngClass]="{ 'is-invalid': submitted && form.endTime?.errors }"
+
+         ></ngx-timepicker-field>
+        </div>
+          <div
+            *ngIf="submitted && form.endTime?.errors"
+            class="invalid-feedback d-block"
+          >
+            <span *ngIf="form.endTime?.errors.required"
+              >This value is required.</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- row -->
+      <div class="form-group col-md-12 row m-0 p-0 mb-2">
+        <div class="col-md-12 col-sm-12">
+          <label class="mb-1 font-weight-medium text-muted"
+            >Log<span class="text-danger">*</span></label
+          ><small>( Maximum limit is 225 characters )</small>
+
+          <textarea
+            #textarea
+            class="form-control"
+            formControlName="logComments"
+            maxlength="225"
+            rows="3"
+            placeholder=""
+            [ngClass]="{ 'is-invalid': submitted && form.logComments?.errors }"
+          ></textarea>
+
+          <div
+            *ngIf="submitted && form.logComments?.errors"
+            class="invalid-feedback"
+          >
+            <span *ngIf="form.logComments?.errors.required"
+              >This value is required.</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- buttons -->
+      <div class="text-right">
+        <button type="submit" class="btn btn-success">
+          Save<span
+            class="spinner-border spinner-border-sm ml-1"
+            role="status"
+            aria-hidden="true"
+            *ngIf="loading"
+          ></span>
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger ml-1"
+          (click)="activeModal.dismiss('Cross click')"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

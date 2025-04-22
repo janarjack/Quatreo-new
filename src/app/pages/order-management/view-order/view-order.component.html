@@ -1,0 +1,257 @@
+<!-- View Order Section Start -->
+<div class="modal-header bg-dark">
+  <h4 class="modal-title text-white">View Order Details</h4>
+  <button
+    type="button"
+    class="close text-white"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body p-3">
+  <!-- <div class="text-left"> -->
+  <!-- <app-ui-preloader [display]="loading"></app-ui-preloader> -->
+  <form>
+    <div class="form-group col-md-12 row m-0 p-0 mb-2">
+      <div class="col-md-4 col-sm-12">
+        <label for="role">Client</label>
+        <input
+          class="form-control"
+          readonly
+          [value]="viewDetails.order.client?.clientName"
+        />
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <label for="fromdate">Received Date</label>
+        <div class="input-group clockpicker">
+          <input
+            class="form-control"
+            readonly
+            [value]="
+              convertDateToString(viewDetails.order?.recievedDate)
+                | date: 'MM/dd/yyyy'
+            "
+          />
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label for="name">End Customer Order Number</label>
+        <input
+          type="text"
+          class="form-control"
+          id="clientOrder"
+          readonly
+          [value]="viewDetails.order?.endCustomerOrder"
+        />
+      </div>
+    </div>
+    <div class="form-group col-md-12 row m-0 p-0 mb-2">
+      <div class="col-md-4">
+        <label for="name">Client Order Number</label>
+        <input
+          type="text"
+          class="form-control"
+          id="clientOrderNo"
+          readonly
+          [value]="viewDetails.order?.clientOrderNumber"
+        />
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <label for="fromdate">Expected Delivery Date</label>
+        <div class="input-group clockpicker">
+          <input
+            type="text"
+            class="form-control"
+            readonly
+            [value]="
+              convertDateToString(viewDetails.order?.expectedDeliveryDate)
+                | date: 'MM/dd/yyyy'
+            "
+          />
+        </div>
+      </div>
+    </div>
+    <div class="form-group col-md-12 row m-0 p-0 mb-2">
+      <div class="col-md-4 col-sm-12 ">
+        <label>Products</label>
+        <div class="card skill-list">
+          <div class="card-body cart_title scroll-y">
+            <span *ngFor="let data of viewDetails.productArray; let i = index">
+              {{ data?.productName }}
+              <span *ngIf="viewDetails.productArray.length - 1 > i">,</span>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label>Type</label>
+
+        <input
+          class="form-control"
+          type="text"
+          id="new"
+          readonly
+          [value]="viewDetails.order?.orderType"
+        />
+      </div>
+      <div class="col-md-4">
+        <label>Priority</label>
+        <input
+          type="text"
+          class="form-control"
+          id="rush"
+          readonly
+          [value]="viewDetails.order.priority?.priorityName"
+        />
+      </div>
+    </div>
+
+    <div class="form-group col-md-12 row m-0 p-0 mb-2">
+      <div class="col-md-8">
+        <label for="address">Address:</label>
+        <div class="card skill-list">
+          <div class="card-body cart_title scroll-y">
+            <span>{{ viewDetails.order?.rawAddress }}</span>
+            <!-- <div *ngIf="viewDetail.userRoleArray.length == 0">
+                    No Role
+                  </div> -->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <label for="city">City</label>
+        <input
+          type="text"
+          class="form-control"
+          id="clientOrderNo"
+          readonly
+          [value]="viewDetails.order?.city"
+        />
+      </div>
+    </div>
+    <div class="form-group col-md-12 row m-0 p-0 mb-2">
+      <div class="col-md-4">
+        <label>State</label>
+        <div class="input-group">
+          <input
+            id="typeahead-basic"
+            type="text"
+            class="form-control"
+            readonly
+            [value]="viewDetails.order?.county?.state?.stateName"
+          />
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label>County</label>
+        <div class="input-group">
+          <input
+            id="typeahead-basic"
+            type="text"
+            class="form-control"
+            readonly
+            [value]="viewDetails.order.county?.countyName"
+          />
+        </div>
+      </div>
+      <div class="col-md-4">
+        <label for="zip">ZIP</label>
+        <input
+          class="form-control"
+          id="zip"
+          readonly
+          [value]="viewDetails.order?.zipCode"
+        />
+      </div>
+    </div>
+
+    <div class="form-group col-md-12 row m-0 p-0 mb-2">
+      <div class="col-md-4 col-sm-12">
+        <label for="apn">APN</label>
+        <input
+          type="text"
+          class="form-control"
+          id="apn"
+          readonly
+          [value]="
+            viewDetails.order?.apn == ''
+              ? 'No data available'
+              : viewDetails.order?.apn
+          "
+        />
+      </div>
+      <div class="col-md-8">
+        <label for="legalDesrc">Legal Description</label>
+        <div class="card skill-list">
+          <div class="card-body cart_title scroll-y">
+            <span>
+              {{
+                viewDetails.order?.legalDesc == ''
+                  ? 'No data available'
+                  : viewDetails.order.legalDesc
+              }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-md-4">
+        <label for="name">Number of days</label>
+        <input type="text" class="form-control" id="noOfDays" readonly />
+      </div> -->
+    </div>
+    <div class="form-group col-md-12 row m-0 p-0 mb-2">
+      <div class="col-md-12">
+        <label for="comment">Comment:</label>
+        <div class="card skill-list">
+          <div class="card-body cart_title scroll-y">
+            <span>
+              {{
+                viewDetails.order.comments == ''
+                  ? 'No data available'
+                  : viewDetails.order?.comments
+              }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12" *ngIf="viewDetails?.orderSellerMapArray.length > 0">
+      <h5>Order's Sellers/Buyers</h5>
+    </div>
+    <div
+      class="form-group col-md-12 row m-0  mb-2 "
+      *ngIf="viewDetails?.orderSellerMapArray.length > 0"
+    >
+      <table class="table  dt-responsive nowrap">
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of viewDetails?.orderSellerMapArray">
+            <td>{{ data?.firstName }}</td>
+            <td>{{ data?.lastName }}</td>
+            <td>{{ data?.orderSellerType }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="text-right">
+      <button
+        type="button"
+        class="btn btn-danger ml-1"
+        (click)="activeModal.dismiss('Cross click')"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+</div>
+
+<!-- View Order Section Start -->

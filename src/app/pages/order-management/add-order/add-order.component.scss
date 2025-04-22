@@ -1,0 +1,61 @@
+#upload_button {
+  display: inline-block;
+}
+
+#upload_button input[type='file'] {
+  display: none;
+}
+
+.upoloadfilebtn {
+  border-radius: 0 0.2rem 0.2rem 0;
+  background-color: #797979;
+  border-color: #858398;
+  cursor: pointer;
+}
+
+// .custom-modal-body{
+//   height: 325px;
+//   overflow-y: auto;
+// }
+
+/* Border Color */
+::ng-deep .ng-select .ng-invalid .ng-touched .ng-select-container {
+  border-color: #f1556c;
+}
+
+/* Arrow Color */
+::ng-deep .ngSelect .ng-invalid .ng-touched .ng-arrow-wrapper .ng-arrow {
+  border-color: #f1556c transparent transparent;
+}
+
+/* Placeholder Color */
+::ng-deep
+  .ngSelect
+  .ng-invalid
+  .ng-touched
+  .ng-select-container
+  .ng-placeholder {
+  color: #f1556c;
+}
+
+::ng-deep .is-invalid .ng-select-container {
+  border-color: #f1556c !important;
+}
+
+.invalid {
+  width: 100%;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #f1556c;
+}
+
+.c-pointer {
+  cursor: pointer !important;
+}
+
+i.fa-calendar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  pointer-events: none;
+}

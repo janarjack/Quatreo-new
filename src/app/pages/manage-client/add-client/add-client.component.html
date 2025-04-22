@@ -1,0 +1,471 @@
+<div class="modal-header bg-dark">
+  <h4 class="modal-title text-white">{{ gettile() }}</h4>
+  <button
+    type="button"
+    class="close text-white"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body p-3">
+  <div class="text-left">
+    <form (ngSubmit)="saveData()" [formGroup]="userForm">
+      <div class="form-group col-md-12 row m-0 p-0">
+        <div class="col-md-4 col-sm-12 mb-2">
+          <label for="clientName"
+            >Client Name<span class="text-danger">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="clientName"
+            placeholder="Enter Name"
+            formControlName="clientName"
+            [ngClass]="{ 'is-invalid': submitted && form.clientName?.errors }"
+          />
+          <div
+            *ngIf="submitted && form.clientName?.errors"
+            class="invalid-feedback"
+          >
+            <span *ngIf="form.clientName?.errors.required"
+              >This value is required.</span
+            >
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-12 mb-2">
+          <label for="phoneNumber"
+            >Phone Number<span class="text-danger">*</span></label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            [textMask]="{ mask: mask, guide: false, modelClean: true }"
+            placeholder="Enter Phone Number"
+            [ngClass]="{ 'is-invalid': submitted && form.phoneNumber?.errors }"
+            minlength="14"
+          />
+          <div
+            *ngIf="submitted && form.phoneNumber?.errors"
+            class="invalid-feedback"
+          >
+            <span *ngIf="form.phoneNumber?.errors.required"
+              >This value is required.</span
+            >
+            <span *ngIf="form.phoneNumber?.errors.minlength"
+              >Phone number must be 10 digits.</span
+            >
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-12 mb-2">
+          <label for="emailId"
+            >Invoice Email <span class="text-danger">*</span></label
+          >
+          <input
+            class="form-control"
+            id="emailId"
+            placeholder="Enter Email"
+            formControlName="emailId"
+            [ngClass]="{ 'is-invalid': submitted && form.emailId?.errors }"
+          />
+          <div
+            *ngIf="submitted && form.emailId?.errors"
+            class="invalid-feedback"
+          >
+            <span *ngIf="form.emailId?.errors.required"
+              >This value is required.</span
+            >
+            <span *ngIf="form.emailId?.errors.pattern"
+              >Please enter valid email.</span
+            >
+          </div>
+        </div>
+      </div>
+      <div class="form-group  col-md-12 row m-0 p-0">
+        <div class="col-md-6 col-sm-12 mb-2">
+          <label for="guidelines"
+            >Guidelines<small>( Maximum file size is 25MB )</small></label
+          >
+          <div class="card skill-list m-0">
+            <div class="card-body cart_title p-1">
+              <div class="input-group-append float-right">
+                <div id="upload_button">
+                  <label>
+                    <input
+                      type="file"
+                      id="file1"
+                      enctype="multipart/form-data"
+                      (change)="fileChange($event)"
+                      multiple
+                      accept="application/pdf,image/*,.csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel,application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    />
+                    <div><i class="fas fa-upload"></i></div>
+                  </label>
+                </div>
+              </div>
+              <div class="custom-width mb-1">
+                <span
+                  class="badge badge-secondary c-pointer"
+                  *ngFor="let arr of guidelineArray; let j = index"
+                  placement="bottom"
+                  ngbTooltip="{{ arr.name }}"
+                >
+                  <i class="fas fa-times" (click)="deleteFile(j)"></i>
+                  {{ arr.name }}</span
+                >
+              </div>
+              <!-- Previous uploaded files for edit page  -->
+              <div *ngIf="clientdata.name == 'edit'">
+                <hr />
+                <div class="uploaded">
+                  <label class="mb-0">Uploaded Files:</label>
+                  <div class="mb-3">
+                    <Small>
+                      (<b>Note:</b> Removed file cannot be retrived back)
+                    </Small>
+                  </div>
+                  <div class="custom-width">
+                    <span
+                      class="badge badge-secondary c-pointer"
+                      *ngFor="let arr of uploadedFiles; let i = index"
+                      placement="bottom"
+                      ngbTooltip="{{ arr.file }}"
+                    >
+                      <i
+                        class="fas fa-times"
+                        (click)="deleteFiles(arr, 'guidelines', i)"
+                      ></i>
+                      {{ arr?.file }}</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12 mb-2">
+          <label for="contacts"
+            >Contracts<span class="text-danger">*</span
+            ><small>( Maximum file size is 25MB )</small></label
+          >
+          <div class="card skill-list m-0">
+            <div class="card-body cart_title p-1">
+              <div class="input-group-append float-right">
+                <div id="upload_button">
+                  <label>
+                    <input
+                      type="file"
+                      id="file1"
+                      [disabled]="uploadedContractFiles.length > 0"
+                      enctype="multipart/form-data"
+                      (change)="contractFiles($event)"
+                      accept="application/pdf"
+                    />
+                    <div>
+                      <i
+                        class="fas fa-upload"
+                        [ngClass]="{
+                          lightgreycolor: uploadedContractFiles.length > 0
+                        }"
+                      ></i>
+                    </div>
+                  </label>
+                </div>
+              </div>
+              <div class="custom-width mb-1">
+                <span
+                  class="badge badge-secondary c-pointer"
+                  *ngFor="let arr of contractArray; let k = index"
+                  placement="bottom"
+                  ngbTooltip="{{ arr.name }}"
+                >
+                  <i class="fas fa-times" (click)="deleteContractFile(k)"></i>
+                  {{ arr.name }}</span
+                >
+              </div>
+              <!-- Previous uploaded files for edit page  -->
+              <div *ngIf="clientdata.name == 'edit'">
+                <hr />
+                <div class="uploaded">
+                  <label class="mb-0">Uploaded Files:</label>
+                  <div class="mb-3">
+                    <Small>
+                      (<b>Note:</b> Removed file cannot be retrived back)
+                    </Small>
+                  </div>
+                  <div class="custom-width">
+                    <span
+                      class="badge badge-secondary c-pointer"
+                      *ngFor="let arr of uploadedContractFiles"
+                      placement="bottom"
+                      ngbTooltip="{{ arr.file }}"
+                    >
+                      <i
+                        class="fas fa-times"
+                        (click)="deleteFiles(arr, 'contracts')"
+                      ></i>
+                      {{ arr.file }}</span
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            *ngIf="
+              (submitted &&
+                !contractArray.length &&
+                clientdata.name == 'add') ||
+              (this.clientdata.name === 'edit' &&
+                this.contractArray.length === 0 &&
+                this.uploadedContractFiles.length === 0)
+            "
+            class="invalid-feedback d-block m-0"
+          >
+            <span *ngIf="!contractArray.length">This value is required.</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-12 row m-0 p-0">
+        <div class="col-md-6 col-sm-12 mb-2">
+          <label for="notes"
+            >Notes <small>( Maximum limit is 500 characters )</small></label
+          >
+          <textarea
+            type="text"
+            class="form-control"
+            id="name"
+            maxlength="500"
+            rows="2"
+            placeholder="Enter Notes"
+            formControlName="notes"
+            [ngClass]="{ 'is-invalid': submitted && form.notes?.errors }"
+          ></textarea>
+          <div *ngIf="submitted && form.notes?.errors" class="invalid-feedback">
+            <span *ngIf="form.notes?.errors.required"
+              >This value is required.</span
+            >
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-12 row m-0">
+        <div class="col-md-4 col-sm-12 p-0 mb-2">
+          <label>Products<span class="text-danger">*</span></label>
+          <div class="col-md-12 ">
+            <div
+              class="checkbox form-check-inline"
+              *ngFor="let data of prodctdata; let i = index"
+            >
+              <input
+                type="checkbox"
+                [value]="data.productName"
+                (change)="onChangeProduct($event, i)"
+                [checked]="data.status"
+              />
+              <label for="taxcart"> {{ data.productName }}</label>
+            </div>
+            <div
+              class="invalid-feedback d-block m-0"
+              *ngIf="submitted && prodArr.length == 0"
+            >
+              <span>Select atleast one value.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-12 row m-0" *ngIf="isMls">
+        <div class="col-md-12 col-sm-12 p-0">
+          <div class="mb-1">
+            <label> Select Category<span class="text-danger">*</span> </label>
+          </div>
+          <div class="col-md-12">
+            <div class="checkbox form-check-inline">
+              <input
+                type="checkbox"
+                [value]=""
+                (change)="checkAll($event)"
+                [checked]="checkAllStatus"
+              />
+              <label class="px-2"> All</label>
+            </div>
+            <div
+              class="checkbox form-check-inline"
+              *ngFor="let data of Data; let i = index"
+            >
+              <input
+                type="checkbox"
+                [value]="data.subProductName"
+                (change)="onCheckboxChange($event, i)"
+                [checked]="data.status"
+              />
+              <label class="px-2"> {{ data.subProductName }}</label>
+            </div>
+          </div>
+          <div
+            class="invalid-feedback d-block m-0"
+            *ngIf="submitted && mlsArr.length == 0 && isMls"
+          >
+            <span>Select atleast one value.</span>
+          </div>
+        </div>
+      </div>
+      <div
+        class="form-group  col-md-12 row m-0 p-0 mb-2"
+        *ngIf="clientdata.name == 'edit'"
+      >
+        <div class="col-md-12 col-sm-12">
+          <label>Status<span class="text-danger">*</span></label>
+          <div class="col-md-12 ">
+            <div
+              class="radio  form-check-inline"
+              *ngFor="let list of statusdata"
+            >
+              <input
+                type="radio"
+                [value]="list.statusValue"
+                formControlName="isActive"
+              />
+              <label for="inlineRadio1"> {{ list.statusData }} </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 mt-3">
+        <h5>
+          {{ clientdata.name | titlecase }} Client's Employees<span
+            class="text-danger"
+            >*</span
+          >
+        </h5>
+      </div>
+      <div
+        class="form-group col-md-12 row m-0 p-0 mb-2 "
+        formArrayName="candidates"
+        *ngFor="
+          let item of userForm.get('candidates')?.controls;
+          let i = index;
+          let last = last
+        "
+      >
+        <div [formGroupName]="i" class="col-md-12 p-0 d-flex flex-wrap">
+          <div class="col-md-4 col-sm-12 mb-2">
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder="Enter Name"
+              formControlName="firstName"
+              [ngClass]="{
+                'is-invalid':
+                  submitted && candidates.controls[i].get('firstName')?.errors
+              }"
+            />
+            <div
+              *ngIf="
+                submitted && candidates.controls[i].get('firstName')?.errors
+              "
+              class="invalid-feedback"
+            >
+              <span
+                *ngIf="candidates.controls[i].get('firstName')?.errors.required"
+                >This value is required.</span
+              >
+            </div>
+          </div>
+          <div class="col-md-4 col-sm-12 mb-2">
+            <input
+              class="form-control"
+              id="email"
+              placeholder="Enter Email"
+              formControlName="email"
+              [ngClass]="{
+                'is-invalid':
+                  submitted && candidates.controls[i].get('email')?.errors
+              }"
+            />
+            <div
+              *ngIf="submitted && candidates.controls[i].get('email')?.errors"
+              class="invalid-feedback"
+            >
+              <span *ngIf="candidates.controls[i].get('email')?.errors.required"
+                >This value is required.</span
+              >
+              <span *ngIf="candidates.controls[i].get('email')?.errors.pattern"
+                >Please enter valid email.</span
+              >
+              <span *ngIf="candidates.controls[i].get('email').errors?.unique"
+                >Email must be unique</span
+              >
+            </div>
+          </div>
+          <div class="col-md-3 col-sm-12 mb-2">
+            <input
+              type="text"
+              class="form-control"
+              id="phone"
+              minlength="14"
+              placeholder="Enter Phone Number"
+              formControlName="phone"
+              [textMask]="{ mask: mask, guide: false, modelClean: true }"
+              [ngClass]="{
+                'is-invalid':
+                  submitted && candidates.controls[i].get('phone').errors
+              }"
+            />
+            <div
+              *ngIf="submitted && candidates.controls[i].get('phone').errors"
+              class="invalid-feedback"
+            >
+              <span *ngIf="candidates.controls[i].get('phone').errors.required"
+                >This value is required.</span
+              >
+              <span *ngIf="candidates.controls[i].get('phone').errors.minlength"
+                >Phone number must be 10 digits.</span
+              >
+              <span *ngIf="candidates.controls[i].get('phone').errors?.unique"
+                >Phone number must be unique</span
+              >
+            </div>
+          </div>
+          <div class="col-md-1 col-sm-12 text-right">
+            <div>
+              <i
+                class="fas fa-plus-circle c-pointer"
+                (click)="addEmployee()"
+                *ngIf="i == 0"
+              ></i>
+            </div>
+            <div>
+              <i
+                class="fas fa-trash pl-1 c-pointer"
+                *ngIf="i != 0"
+                (click)="removeEmployee(item, i)"
+              ></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-right">
+        <button type="submit" class="btn btn-success">
+          Save
+          <span
+            class="spinner-border spinner-border-sm ml-1"
+            role="status"
+            aria-hidden="true"
+            *ngIf="loading"
+          ></span>
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger ml-1"
+          (click)="activeModal.dismiss('Cross click')"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,471 @@
+<div class="container-fluid">
+  <app-page-title title="" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center pb-2 mb-4 bb-1-grey">
+            <div class="col-sm-12 col-md-8 font-weight-bold header-title">
+              Quality Audit
+            </div>
+          </div>
+          <!-- <div class="col-md-12  col-sm-12">
+            Criteria
+          </div> -->
+          <h5>Criteria</h5>
+          <app-ui-preloader [display]="loading"></app-ui-preloader>
+          <div class="row">
+            <form
+              autocomplete="off"
+              (ngSubmit)="saveData()"
+              class="col-md-12"
+              [formGroup]="userForm"
+            >
+              <div class="form-group col-md-12 row m-0 p-0">
+                <div class="col-md-4 col-sm-12 mb-2">
+                  <label for="role">Client</label>
+                  <ng-select
+                    bindLabel="clientName"
+                    bindValue="id"
+                    [closeOnSelect]="false"
+                    formControlName="clientid"
+                    class="ngSelect"
+                    [items]="selectClient"
+                    [multiple]="true"
+                  >
+                    <ng-template
+                      ng-option-tmp
+                      let-item="item"
+                      let-item$="item$"
+                      let-index="index"
+                    >
+                      <input
+                        id="item-{{ index }}"
+                        type="checkbox"
+                        [ngModel]="item$.selected"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                      {{ item.clientName }}
+                    </ng-template></ng-select
+                  >
+                </div>
+                <!-- <div class="col-md-4 col-sm-12 mb-2">
+                                    <label for="skill">User</label>
+                                    <ng-select [items]="selectSkill" [multiple]="true"></ng-select>
+                                </div> -->
+                <div class="col-md-4 col-sm-12 mb-2">
+                  <label for="client">Type</label>
+                  <ng-select
+                    formControlName="type"
+                    [items]="selectType"
+                  ></ng-select>
+                </div>
+                <div class="col-md-4 col-sm-12 mb-2">
+                  <label>Products</label>
+                  <div class="col-md-12">
+                    <div
+                      class="checkbox form-check-inline"
+                      *ngFor="let data of prodctdata; let i = index"
+                    >
+                      <input
+                        type="checkbox"
+                        [value]="data.id"
+                        (change)="onChangeProduct($event, i)"
+                        formControlName="productType"
+                      />
+                      <label for="taxcart"> {{ data.productName }}</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-12 row m-0 p-0">
+                <div class="col-md-6 col-sm-12 mb-2">
+                  <label for="clientOrder">Client Order</label>
+                  <ng-select
+                    bindLabel="selectClientOrder"
+                    bindValue="selectClientOrder"
+                    formControlName="clientOrder"
+                    class="ngSelect"
+                    [closeOnSelect]="false"
+                    [items]="selectClientOrder"
+                    [multiple]="true"
+                    [ngClass]="{
+                      'is-invalid': submitted && form.clientOrder?.errors
+                    }"
+                  >
+                    <ng-template
+                      ng-option-tmp
+                      let-item="item"
+                      let-item$="item$"
+                      let-index="index"
+                    >
+                      <input
+                        id="item-{{ index }}"
+                        type="checkbox"
+                        [ngModel]="item$.selected"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                      {{ item }}
+                    </ng-template>
+                  </ng-select>
+                  <!-- <input type="text" class="form-control" id="clientOrder"
+                                        placeholder="Enter client order number" formControlName="clientOrder"
+                                        [ngClass]="{'is-invalid': submitted && form.clientOrder?.errors}"> -->
+                  <div
+                    *ngIf="submitted && form.clientOrder?.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.clientOrder?.errors.required"
+                      >This value is required.</span
+                    >
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-12 mb-2">
+                  <label for="quatreoOrder">Quatreo Order</label>
+                  <ng-select
+                    bindLabel="selectQuatreoOrder"
+                    bindValue="selectQuatreoOrder"
+                    formControlName="quatreoOrder"
+                    class="ngSelect"
+                    [closeOnSelect]="false"
+                    [items]="selectQuatreoOrder"
+                    [multiple]="true"
+                    [ngClass]="{
+                      'is-invalid': submitted && form.quatreoOrder?.errors
+                    }"
+                  >
+                    <ng-template
+                      ng-option-tmp
+                      let-item="item"
+                      let-item$="item$"
+                      let-index="index"
+                    >
+                      <input
+                        id="item-{{ index }}"
+                        type="checkbox"
+                        [ngModel]="item$.selected"
+                        [ngModelOptions]="{ standalone: true }"
+                      />
+                      {{ item }}
+                    </ng-template>
+                  </ng-select>
+                  <div
+                    *ngIf="submitted && form.quatreoOrder?.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.quatreoOrder?.errors.required"
+                      >This value is required.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-12 row m-0 p-0">
+                <div class="col-md-4 col-sm-12 mb-2">
+                  <label for="fromdate">From Date</label>
+                  <div class="position-relative">
+                    <input
+                      class="form-control cpointer"
+                      #datepickerMD="bsDatepicker"
+                      bsDatepicker
+                      formControlName="fromDate"
+                      [maxDate]="today"
+                      [bsConfig]="{ dateInputFormat: 'YYYY/MM/DD' }"
+                      onkeydown="return false"
+                      [ngClass]="{
+                        'is-invalid': submitted && form.fromDate?.errors
+                      }"
+                      id="start-date"
+                    />
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <div
+                    *ngIf="submitted && form.fromDate?.errors"
+                    class="invalid-feedback d-block"
+                  >
+                    <span *ngIf="form.fromDate?.errors.required"
+                      >This value is required.</span
+                    >
+                  </div>
+                </div>
+                <div class="col-md-4 col-sm-12 mb-2">
+                  <label for="to date">To Date</label>
+                  <div class="position-relative">
+                    <input
+                      class="form-control cpointer"
+                      #datepickerMD="bsDatepicker"
+                      bsDatepicker
+                      formControlName="toDate"
+                      [maxDate]="today"
+                      [bsConfig]="{ dateInputFormat: 'YYYY/MM/DD' }"
+                      onkeydown="return false"
+                      [ngClass]="{
+                        'is-invalid': submitted && form.toDate?.errors
+                      }"
+                      id="start-date"
+                    />
+                    <i class="fa fa-calendar"></i>
+                  </div>
+                  <div
+                    *ngIf="submitted && form.toDate?.errors"
+                    class="invalid-feedback d-block"
+                  >
+                    <span *ngIf="form.toDate?.errors.required"
+                      >This value is required.</span
+                    >
+                  </div>
+                </div>
+
+                <div class="col-md-4 col-sm-12 mb-2">
+                  <label for="name">Audit</label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    class="form-control"
+                    id="name"
+                    formControlName="auitnumber"
+                    [ngClass]="{
+                      'is-invalid': submitted && form.auitnumber?.errors
+                    }"
+                  />
+                  <div
+                    *ngIf="submitted && form.auitnumber?.errors"
+                    class="invalid-feedback"
+                  >
+                    <span *ngIf="form.auitnumber?.errors.required"
+                      >This value is required.</span
+                    >
+                  </div>
+                </div>
+              </div>
+              <div class="text-right mb-2">
+                <button type="submit" class="btn btn-success">Submit</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="row mb-md-2">
+            <!-- client filter -->
+            <!-- <div class="col-md-4 col-sm-12">
+                <label for="role">Client</label>
+                <ng-select [items]="selectClient"></ng-select>
+              </div> -->
+
+            <div class="form-group col-md-4 col-sm-12">
+              <!-- <label for="inputState" class="col-form-label">State</label> -->
+              <select id="inputState" class="form-control">
+                <option>Filter by Client</option>
+                <option>Option 1</option>
+                <option>Option 2</option>
+                <option>Option 3</option>
+              </select>
+            </div>
+          </div>
+          <!-- Table -->
+          <div class="table-responsive">
+            <table id="basic-datatable" class="table dt-responsive nowrap">
+              <thead>
+                <tr>
+                  <th sortable="clientName">
+                    Client Name
+                  </th>
+                  <th sortable="clientOrder">
+                    Client Order
+                  </th>
+                  <th sortable="quatreoOrder">
+                    Quatreo Order
+                  </th>
+                  <th sortable="countyState">
+                    County State
+                  </th>
+                  <th sortable="status">
+                    Status
+                  </th>
+                  <th sortable="user-tax">
+                    User -tax/MLS
+                  </th>
+                  <th sortable="eddDate">
+                    ECD date
+                  </th>
+                  <th sortable="priority">
+                    Priority
+                  </th>
+                  <th sortable="action">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let table of tableData; let i = index">
+                  <td>
+                    <ngb-highlight
+                      [result]="
+                        table.userOrderDetails[0].userOrder.order.client
+                          .clientName
+                      "
+                    >
+                    </ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight
+                      [result]="
+                        table.userOrderDetails[0].userOrder.order
+                          .clientOrderNumber
+                      "
+                      class="clientOrder"
+                      (click)="auditClientdata(table)"
+                    ></ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight
+                      [result]="
+                        table.userOrderDetails[0].userOrder.order
+                          .quatreoOrderNumber
+                      "
+                    >
+                    </ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight
+                      [result]="
+                        table.userOrderDetails[0].userOrder.order.county
+                          .countyName
+                      "
+                    >
+                    </ngb-highlight>
+                    <ngb-highlight
+                      [result]="
+                        table.userOrderDetails[0].userOrder.order.county.state
+                          .stateName
+                      "
+                    >
+                    </ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight
+                      [result]="
+                        table.userOrderDetails[0].userOrder.order.status
+                          .statusName
+                      "
+                    >
+                    </ngb-highlight>
+                  </td>
+                  <td>
+                    <span
+                      *ngFor="
+                        let list of (table?.userOrderDetails)[1].productArray;
+                        let i = index
+                      "
+                    >
+                      {{ list.productName | titlecase }}
+                      <span
+                        *ngIf="
+                          (table?.userOrderDetails)[1].productArray.length - 1 >
+                          i
+                        "
+                        >,</span
+                      >
+                    </span>
+                  </td>
+                  <td>
+                    <ngb-highlight
+                      [result]="
+                        table.userOrderDetails[0].userOrder.order
+                          .expectedDeliveryDate
+                      "
+                    >
+                    </ngb-highlight>
+                  </td>
+                  <td>
+                    <ngb-highlight
+                      [result]="
+                        table.userOrderDetails[0].userOrder.order.priority
+                          .priorityName
+                      "
+                    >
+                    </ngb-highlight>
+                  </td>
+                  <td>
+                    <input
+                      type="checkbox"
+                      [value]="table.userOrderDetails[0].userOrder.id"
+                      (change)="onChangeOrder($event, i)"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div
+              class="text-center my-4"
+              *ngIf="!tableData || tableData.length == 0"
+            >
+              <h5 class="nodata">No data available</h5>
+            </div>
+          </div>
+
+          <!-- End table -->
+
+          <div class="text-right mb-2 py-3" *ngIf="tableData.length > 0">
+            <button class="btn btn-success" (click)="moveToAudit()">
+              Move to Audit
+            </button>
+          </div>
+
+          <!-- Pagination -->
+          <div
+            class="row justify-content-md-between align-items-md-center mt-2"
+            *ngIf="tableData.length > 0"
+          >
+            <div class="col-sm-12 col-md-5">
+              <div
+                class="dataTables_info mb-2"
+                id="tickets-table_info"
+                role="status"
+                aria-live="polite"
+              >
+                Showing
+                {{ (page - 1) * pageSize + 1 }} to
+                {{
+                  page - 1 >= tableData.length / pageSize - 1
+                    ? tableData.length
+                    : ((page - 1) * pageSize + pageSize | number: locale)
+                }}
+                of {{ tableData.length }}
+                entries
+              </div>
+            </div>
+
+            <div
+              class="col-sm-12 col-md-5 d-flex justify-content-end flex-wrap"
+            >
+              <div class="select_box">
+                <ng-select
+                  [items]="sizeOptions"
+                  bindLabel="name"
+                  bindValue="value"
+                  [clearable]="false"
+                  [(ngModel)]="pageSize"
+                  (change)="changePagesize()"
+                  appendTo="body"
+                >
+                </ng-select>
+              </div>
+              <div class="text-md-right pagination-rounded">
+                <ngb-pagination
+                  [(page)]="page"
+                  [pageSize]="pageSize"
+                  [collectionSize]="tableData.length"
+                  [maxSize]="1"
+                  [rotate]="true"
+                  [ellipses]="false"
+                  [boundaryLinks]="true"
+                ></ngb-pagination>
+              </div>
+            </div>
+          </div>
+          <!-- End Pagination -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

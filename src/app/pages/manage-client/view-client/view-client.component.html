@@ -1,0 +1,190 @@
+<div class="modal-header bg-dark">
+  <h4 class="modal-title text-white">View Client Details</h4>
+  <button
+    type="button"
+    class="close text-white"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body p-3">
+  <div class="text-left">
+    <form>
+      <app-ui-preloader [display]="loading"></app-ui-preloader>
+      <div class="form-group col-md-12 row m-0 p-0 mb-2">
+        <div class="col-md-6 col-sm-12">
+          <label for="clientName">Client Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="clientName"
+            readonly
+            [value]="viewDetail.client?.clientName"
+          />
+        </div>
+        <div class="col-md-6 col-sm-12">
+          <label for="phoneNumber">Phone Number</label>
+          <input
+            type="text"
+            [textMask]="{ mask: mask, guide: false, modelClean: true }"
+            readonly
+            class="form-control"
+            id="phoneNumber"
+            [value]="viewDetail.client?.phoneNumber | phone: 'US'"
+          />
+        </div>
+      </div>
+      <div class="form-group col-md-12 row m-0 p-0 mb-2">
+        <div class="col-md-6 col-sm-12">
+          <label for="emailId">Invoice Email</label>
+          <input
+            class="form-control"
+            id="emailId"
+            readonly
+            [value]="viewDetail.client?.invoiceMail"
+          />
+        </div>
+        <div class="col-md-6 col-sm-12">
+          <label for="notes">Notes</label>
+          <textarea
+            type="text"
+            class="form-control"
+            readonly
+            id="name"
+            rows="1"
+            [value]="viewDetail.client?.notes"
+          ></textarea>
+        </div>
+      </div>
+      <div class="form-group col-md-12 row m-0 p-0 mb-2 ">
+        <div class="col-md-6 col-sm-12">
+          <label for="guidelines">Guidelines</label>
+          <div class="card skill-list">
+            <div class="card-body cart_title scroll-y">
+              <div *ngFor="let file of viewDetail.guidelinesFile">
+                <a (click)="downloadFile(file, 'guidelines', content)">
+                  {{ file?.file }}
+                </a>
+              </div>
+              <div *ngIf="viewDetail.guidelinesFile.length == 0">
+                No Files
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+          <label for="contacts">Contracts</label>
+          <div class="card skill-list">
+            <div class="card-body  scroll-y">
+              <div *ngFor="let file of viewDetail.contractsFile">
+                <a (click)="downloadFile(file, 'contracts', content)">
+                  {{ file?.file }}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-12 row m-0 p-0 mb-2 ">
+        <div class="col-md-6 col-sm-12">
+          <label for="guidelines">Products</label>
+          <div class="card skill-list">
+            <div class="card-body  ">
+              <span *ngFor="let data of viewDetail.clientProd; let i = index">
+                {{ data?.productName
+                }}{{ i === viewDetail.clientProd.length - 1 ? '' : ', ' }}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div
+          class="col-md-6 col-sm-12"
+          *ngIf="viewDetail.clientSubProd.length != 0"
+        >
+          <label for="contacts">MLS Category</label>
+          <div class="card skill-list">
+            <div class="card-body cart_title ">
+              <span
+                *ngFor="let data of viewDetail.clientSubProd; let i = index"
+              >
+                {{ data?.subProductMaster.subProductName
+                }}{{ i === viewDetail.clientSubProd.length - 1 ? '' : ', ' }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12 mt-3" *ngIf="viewDetail.clientEmp.length > 0">
+        <h5>Client's Employees</h5>
+      </div>
+      <div
+        class="form-group col-md-12 row m-0  mb-2 "
+        *ngIf="viewDetail.clientEmp.length > 0"
+      >
+        <table class="table  dt-responsive nowrap">
+          <thead>
+            <tr>
+              <th>Employee Name</th>
+              <th>Email</th>
+              <th>Phone Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let data of viewDetail.clientEmp">
+              <td>{{ data?.firstName }}</td>
+              <td>{{ data?.email }}</td>
+              <td [textMask]="{ mask: mask, guide: false, modelClean: true }">
+                {{ data?.phone | phone: 'US' }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div></div>
+      <div class="text-right">
+        <button
+          type="button"
+          class="btn btn-danger ml-1"
+          (click)="activeModal.dismiss('Cross click')"
+        >
+          Close
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<ng-template #content role="document" let-modal="close">
+  <div class="modal-header bg-dark">
+    <h4 class="modal-title text-white">View File</h4>
+    <button
+      type="button"
+      class="close text-white"
+      aria-label="Close"
+      (click)="modal('Cross click')"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body p-3">
+    <div class="text-left">
+      <div *ngIf="image">
+        <img [src]="image" alt="" class="view-image" />
+      </div>
+      <div *ngIf="pdf">
+        <iframe [src]="pdf" type="application/pdf" class="view-pdf"></iframe>
+      </div>
+      <div class="text-right mt-2">
+        <button
+          type="button"
+          class="btn btn-danger ml-1"
+          (click)="modal('close click')"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-template>

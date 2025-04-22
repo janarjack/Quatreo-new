@@ -1,0 +1,80 @@
+.btnContainer {
+  justify-content: space-around;
+}
+
+.custom-card-container {
+  // max-width:14%;
+  padding: 0 8px;
+
+  .custom-card-odd {
+    padding: 10px;
+    border-left: 3px solid #2a5a96;
+    background: #cccccc38;
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+
+    .card-text-color {
+      color: #5867dd;
+      font-weight: bold;
+    }
+  }
+
+  .custom-card-even {
+    padding: 10px;
+    border-left: 3px solid #34bfa3;
+    border-radius: 5px;
+    /* background: #f2e7fd; */
+    background: #34bfa305;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+
+    .card-text-color {
+      color: #34bfa3;
+      font-weight: bold;
+    }
+  }
+}
+
+th {
+  white-space: nowrap;
+  padding-right: 24px;
+}
+
+
+.select_box select {
+  border: none;
+  border-bottom: 2px solid #c1c1c1;
+  background: transparent;
+  margin-top: 7px;
+}
+.select_box select:focus{
+  outline: none;;
+}
+
+@media (min-width: 768px) {
+  .custom-card-container {
+    max-width: 14%;
+
+    p {
+      white-space: nowrap;
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .custom-card-container {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+@media (max-width:768px) {
+  .btnContainer {
+    justify-content: space-between;
+  }
+}
+
+@media (min-width:1024px) {
+  .filterbtn {
+    width: inherit;
+  }
+}

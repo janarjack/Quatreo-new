@@ -1,0 +1,36 @@
+<div class="modal-header bg-dark">
+  <!-- <h4 class="modal-title text-white">Confirm</h4> -->
+  <button
+    type="button"
+    class="close text-white"
+    aria-label="Close"
+    (click)="activeModal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body p-3">
+  <div class="text-left mb-3">
+    <h4>Mark as completed ?</h4>
+  </div>
+  <div class="text-right">
+    <button
+      type="submit"
+      class="btn btn-sm btn-success"
+      (click)="markAsCompleted()"
+    >
+      Yes<span
+        class="spinner-border spinner-border-sm ml-1"
+        aria-hidden="true"
+        *ngIf="isloading"
+      ></span>
+    </button>
+    <button
+      type="button"
+      class="btn btn-sm btn-danger ml-1"
+      (click)="activeModal.dismiss('Cross click')"
+    >
+      No
+    </button>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+::ng-deep .timepicker-overlay {
+  z-index: 9999 !important;
+}
+
+::ng-deep .timepicker-dial {
+  text-align: center !important;
+}
+
+::ng-deep .timepicker-dial {
+  text-align: center !important;
+}
+
+::ng-deep .timepicker-backdrop-overlay {
+  z-index: 9999 !important;
+}
+
+::ng-deep .timepicker__actions {
+  justify-content: space-evenly !important;
+}
+
+::ng-deep .clock-face {
+  width: 260px !important;
+  height: 260px !important;
+  padding: 8px !important;
+}
+
+::ng-deep .ngx-timepicker {
+  border-bottom: unset !important;
+  justify-content: space-evenly !important;
+}
+::ng-deep .ngx-timepicker-control--active::after {
+  height: 0px !important;
+}
+
+@media (max-device-width: 1023px) and (orientation: landscape) {
+  ::ng-deep .clock-face {
+    width: 225px !important;
+    height: 225px !important;
+    padding: 5px !important;
+  }
+}
+::ng-deep .ngx-timepicker-control__arrows {
+  display: none !important;
+}
+::ng-deep .ngx-timepicker-control__input {
+  pointer-events: none !important;
+}

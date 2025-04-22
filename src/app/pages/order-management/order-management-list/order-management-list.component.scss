@@ -1,0 +1,26 @@
+.select_box select {
+  border: none;
+  background: transparent;
+  margin-top: 7px;
+  border: 1px solid #c1c1c1;
+  border-radius: 4px;
+  padding: 3px;
+  margin-top: 7px;
+}
+.select_box select:focus {
+  outline: none;
+}
+.editbtn {
+  background: transparent;
+  outline: none;
+  border: none;
+  color: #99a7ae;
+  font-size: 18px;
+  cursor: pointer;
+}
+.editbtn.disabled {
+  color: #d5dbde;
+}
+.nodata {
+  color: #6c757d !important;
+}

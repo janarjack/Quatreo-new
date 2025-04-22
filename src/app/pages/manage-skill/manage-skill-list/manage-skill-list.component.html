@@ -1,0 +1,48 @@
+<div class="container-fluid">
+  <app-page-title title="" [breadcrumbItems]="breadCrumbItems"></app-page-title>
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-body">
+          <div class="row align-items-center pb-2 mb-4 bb-1-grey">
+            <div class="col-sm-12 col-md-8 font-weight-bold header-title">
+              Manage Skill Set
+            </div>
+          </div>
+          <div class="row">
+            <app-ui-preloader [display]="loading"></app-ui-preloader>
+            <div
+              class="col-md-6 col-xl-6 col-sm-12"
+              *ngFor="let list of skillList"
+            >
+              <div class="card skill-list">
+                <div
+                  class="card-body cart_title d-flex justify-content-between align-items-center"
+                >
+                  <h5 class="m-0">
+                    {{
+                      list.categoryName +
+                        ' ( ' +
+                        list.product?.productName +
+                        ' )'
+                    }}
+                  </h5>
+                  <div
+                    class="font-weight-bold text-{{
+                      commonService.getStatusClass(list.active)
+                    }}"
+                  >
+                    {{ commonService.getStatus(list.active) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center " *ngIf="!skillList || skillList.length == 0">
+            <h5 class="nodata">No data available</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
