@@ -121,6 +121,14 @@ const routes: Routes = [
         (m) => m.BulkOrdersModule
       ),
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'order-upload-MLS',
+    loadChildren: () =>
+      import('./order-upload-MLS/order-upload-MLS.module').then(
+        (m) => m.OrderUploadMLSModule
+      ),
+    canActivate: [AuthGuard],
   }
 ];
 @NgModule({

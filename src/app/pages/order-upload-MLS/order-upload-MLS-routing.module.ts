@@ -4,7 +4,7 @@ import { OrderUploadMLSComponent } from './order-upload-MLS/order-upload-MLS.com
 
 const routes: Routes = [
     {
-        path: 'order-upload-MLS/list',
+        path: 'list',
         component: OrderUploadMLSComponent
     }
 ];
